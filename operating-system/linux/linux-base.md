@@ -1,10 +1,14 @@
 # 基础文件
 
+> 参考资料：
+>
+> [**《鳥哥的 Linux 私房菜》**](http://linux.vbird.org/linux_basic/) 
+>
+> **Linux man function** 
+
 
 
 ## 文件属性与目录配置
-
----
 
 
 
@@ -28,7 +32,11 @@
     * 旺财负责的电商项目组：旺财、二哈、狗蛋
   * 资源：CTO办公室、休息室、厕所、支付项目组工作区、电商项目工作区
 
+
+
 ![user-group](https://github.com/jinminer/docs/blob/master/devops/operating-system/linux/user-group.png)
+
+
 
   * 不同的人`user`有不同的工作区域，不同的资源有不同的访问权限。
     * 文件的`owner`所有者，默认是刚开始创建它的那个用户，也可以修改。比如赵四写了一份技术文档，文档的所有者是赵四，某一天赵四离职了，把技术文档交接给了张三，这个时候该文档的`owner`就变成了张三。
@@ -50,9 +58,13 @@
 
 * 如图所示，每一行代表一个文件/目录的所有信息，不同的列表示文件/目录的不同属性，共有7项属性。以`.oh-my-zsh`文件为例：
 
+
+
   ```powershell
     drwxr-xr-x  11 root root  4096 Sep  4 23:16 .oh-my-zsh
   ```
+
+
 
     ![file-detail](https://github.com/jinminer/docs/blob/master/devops/operating-system/linux/file-detail.png)
 
@@ -72,6 +84,8 @@
 
 每个文件/目录的操作属性共有10个以`.oh-my-zsh`文件的操作属性为例
 
+
+
 ```spreadsheet
  drwxr-xr-x 
 ```
@@ -79,6 +93,8 @@
 
 
 ![](https://github.com/jinminer/docs/blob/master/devops/operating-system/linux/file-method-detail.png)
+
+
 
 * I. 类型
   * `[ d ]` 目录
@@ -98,9 +114,13 @@
 
 #### 修改group用户组
 
+
+
 ```shell
 chgrp [-R] groupname dirname/filename
 ```
+
+
 
 * `chgrp` -> `change group`
 * `[-R]` 当对某一目录执行指令时，进行递归`recursive`形式的持续变更，该指令的执行结果对目录下的所有文件和目录都会生效。
@@ -108,6 +128,8 @@ chgrp [-R] groupname dirname/filename
 
 
 #### 修改own拥有者
+
+
 
 ```shell
 chown [-R] username	dirname/filename
@@ -139,6 +161,8 @@ chown [-R] username:groupname dirname/filename
     * `group = 4 + 0 + 1 = 5`
     * `other = 0 + 0 + 0 = 0` 
 
+
+
     ```shell
     # v1=owner-value; v2=group-value; v3=other-value;
     chmod [-R] v1v2v3 filename/dirname
@@ -154,11 +178,14 @@ chown [-R] username:groupname dirname/filename
     * `[ g ]` -> `group` 所属用户组
     * `[ o ]` -> `others` 非组内用户
     * `[ a ]` -> `all` 所有用户
+
   * 运算法则
     * `[ + ]` 加入
     * `[ - ]` 去除
     * `[ = ]` 赋值
+
   * `[rwx]`读写属性
+
 
 ```shell
 # 对 指定用户角色 赋予指定的操作权限
@@ -184,6 +211,8 @@ chmod a-r test.txt
 
   * 当user对某个文件具有`[ r ]`权限时，才可以查看该目录中内容
 
+
+
     ```shell
     drwx------ 4 jinm   jinm 4096 Dec 14 14:31 test
     [beyond@localhost jinm]$ ls test
@@ -191,6 +220,8 @@ chmod a-r test.txt
     ```
 
   * 但是需要注意的是user必须同时具有`[ r ]`和`[ x ]`权限时才能查看详细信息
+
+
 
     ```shell
     [beyond@localhost jinm]$ ll
@@ -203,6 +234,8 @@ chmod a-r test.txt
     ```
 
   * user必须同时具有`[ r ]`和`[ x ]`权限时才能进入该目录
+
+
 
     ```shell
     drwx-w---- 4 jinm   jinm 4096 Dec 14 14:31 test
@@ -223,6 +256,8 @@ chmod a-r test.txt
 * `[ x ]` -> `access directory` 只有为用户设置了这个权限，才能进入。
 
 #### 综合练习
+
+
 
 ```shell
 #root用户登录
@@ -267,9 +302,13 @@ ls -l
 
 * `df` 
 
+
+
   ```shell
   df [OPTION]... [FILE]...
   ```
+
+
 
   * `options`
 
@@ -289,6 +328,8 @@ ls -l
 
   * `e.g.` 不指定参数，查看当前已挂载系统的所有可用空间
 
+
+
     ```shell
     # root @ localhost in ~ [22:10:53] 
     df 
@@ -302,6 +343,8 @@ ls -l
     ```
 
   * `e.g.` 查看当前已挂载系统的所有可用空间，并以易读的格式显示
+
+
 
     ```shell
     # root @ localhost in ~ [22:10:55] 
@@ -317,6 +360,8 @@ ls -l
 
   * `e.g.` 查看当前已挂载系统的所有可用空间，并展示文件系统的类型
 
+
+
     ```shell
     df -T
     Filesystem     Type     1K-blocks    Used Available Use% Mounted on
@@ -330,6 +375,8 @@ ls -l
     ```
 
   * `e.g.` 列出包括虚拟文件在内的所有文件系统的信息。
+
+
 
     ```shell
     df -a
@@ -369,10 +416,14 @@ ls -l
 
 * `du`
 
+
+
   ```shell
   du [OPTION]... [FILE]...
   du [OPTION]... --files0-from=F
   ```
+
+
 
     * `options`
 
@@ -383,6 +434,8 @@ ls -l
         * `-h` 以 `MBytes `列出容量显示；
 
     * `e.g.` 递归显示当前目录下，所有子目录的占用量。
+
+
 
       ```shell
       du
@@ -395,6 +448,8 @@ ls -l
       ```
 
     * `e.g.` 递归显示当前目录下，所有子目录以及文件的占用量。
+
+
 
       ```shell
       du -a
@@ -417,12 +472,16 @@ ls -l
 
     * `e.g.` 统计当前目录的总占用量。
 
+
+
       ```shell
       du -s
       52	.
       ```
 
     * `e.g.` 查看当前目录下，每个目录和文件各自的占用量，不包括隐藏文件，亦不会递归展示子目录。
+
+
 
       ```shell
       #使用通配符 * 匹配当前目录下的所有一级子目录和一级子文件。
@@ -446,17 +505,23 @@ ls -l
 
   * `hard link`指向源文件的`inode`，`symbolic link`链接指向源文件的`inode`的指针。所以只要硬盘中的数据还在，`hard link`就不会失效；对于`symbolic link`而言，只要他指向的文件指针失效，它既失效。
 
-  * `options`
+  * `options` 
+
+
 
     ```shell
     ln [OPTION] TARGET DIRECTORY                     
     ```
+
+
 
     * `ln` 不加任何参数，就是`hard link` 
     * `-s` 就是`symbolic link` 
     * `-f` 删除已存在的目标文件，即如果目标文件已存在，会主动删除后再建立
 
   * `e.g.` 将`/etc/passwd` 复制到`/tmp`底下，查看`inode` 和 `block` 
+
+
 
     ```shell
     # root @ localhost in /tmp [10:11:54] 
@@ -482,6 +547,8 @@ ls -l
 
   * `e.g.` 将 `/tmp/passwd` 制作 `hard link` 成为 `passwd-hd` 文件。查看 `passwd` 和 `passwd-hd`文件的查看`inode` 和 `block` 。
 
+
+
     ```shell
     # root @ localhost in /tmp [10:14:53] 
     ln passwd passwd-hd
@@ -503,6 +570,8 @@ ls -l
 
   * `e.g.` 将将 `/tmp/passwd` 制作 `symbolic link` 成为 `passwd-so` 文件，查看容量。
 
+
+
     ```shell
     # root @ localhost in /tmp [10:17:25] 
     ln -s passwd passwd-so
@@ -522,9 +591,13 @@ ls -l
     
     ```
 
+
+
     `passwd-so`指向的`inode number`变了，这是一个新的文件。这个文件的内容时指向`passwd`的，大小为`6bytes`，这个大小式因为链接文件的内容是连结对象的文件名，也就是`passwd`，所以你需要连结的源文件名(可以是目录)有多少个字符，这个链接文件就有多大。而且这时候我们发现硬盘容量和`inode`的使用数都变了。
 
   * `e.g.` 删除源文件`passwd`查看`passwd-hd`和`passwd-so`是否正常，能够开启？
+
+
 
     ```shell
     # root @ localhost in /tmp [10:44:38] 
@@ -566,11 +639,17 @@ ls -l
 
   * `mkdir`  -> `make directory` 创建一个新的目录
 
+  * 
+
     ```shell
     mkdir [options] file
     ```
 
+
+
     * `-m` -> `mode` 创建目录并设置该目录的操作权限。如果不加该参数，系统会预设权限值。
+
+
 
       ```shell
       mkdir -m 711 test
@@ -591,11 +670,15 @@ ls -l
 
   * 将某个路径配置到该变量后，在任意目录下都可执行该路径中的可执行文件
 
+
+
     ```shell
     PATH="$PATH":/directory
     ```
 
   * 不配置`PATH` 使用绝对路径来访问，前提知道要执行文件的准确绝对路径
+
+
 
     ```shell
     /directory/filename
@@ -612,6 +695,8 @@ ls -l
 * `ls` -> `list directory contents` 列出文件/目录的信息
 
   * `synopsis` 
+
+
 
     ```shell
     ls [OPTION]... [FILE]...
@@ -648,8 +733,11 @@ ls -l
     * `--color=[OPTION]` 列出目标目录下所有目录/文件，不包括以`.`和`..`开头的文件/目录。
 
       * `never` 不根据文件类型显示相应的颜色
+
       * `auto ` 系统自行判断是否根据文件类型显示颜色
+
       * `always ` 根据文件类型显示相应的颜色
+
 
       ```shell
       ls --color=auto jinm/
@@ -684,6 +772,7 @@ ls -l
 
       * `ctime` 以最近修改用户组/拥有者权限时间的倒序展示
 
+
       ```shell
       # 示例目录初始状态
       # root @ localhost in ~jinm [1:01:49] 
@@ -716,9 +805,13 @@ ls -l
       ```
 
 
+
+
 * `cp` -> `copy files and directories` 
 
   * `synopsis` 
+
+
 
     ```shell
     cp -[options] source target
@@ -749,6 +842,8 @@ ls -l
 
   * `synopsis` 
 
+
+
     ```shell
     rm [option] file
     ```
@@ -760,6 +855,8 @@ ls -l
     * `-r` -> `--recursive` 递归删除目标目录，包括其子目录和文件。
 
   * `e.g.` 某些文件或目录名称中带有关键字符 比如 `-` 等，执行相关命令操作时，系统无法识别 `-` 后面的文件名称(当中指令的参数)，可以用`./filename`等方式执行命令。
+
+
 
     ```shell
     # root @ localhost in /home/jinm [11:45:19] 
@@ -782,6 +879,8 @@ ls -l
 
   * `synopsis` 
 
+
+
     ```shell
     mv [OPTION] SOURCE DIRECTORY
     mv [OPTION] SOURCE1,SOURCE2...SOURCEN DIRECTORY
@@ -793,12 +892,11 @@ ls -l
     * `-i` -> `--interactive` 覆盖之前进行提示。
     * `-u` -> `--update` 移动`destination` 中没有或者最近修改时间比 `source`老的文件。
 
-    ```shell
-    
-    ```
 
 
 * 获取文件/目录名称和所处的路径
+
+
 
   ```shell
   # root @ localhost in /home/jinm [15:36:13] 
@@ -815,11 +913,14 @@ ls -l
   ```
 
 
+
 ### 查看文件内容
 
 * `cat` -> `concatenate` 
 
   * `synopsis` 
+
+
 
     ```shell
     cat [OPTION]... [FILE]...
@@ -841,6 +942,8 @@ ls -l
 
   * `synopsis` 
 
+
+
     ```shell
     tac [OPTION]... [FILE]...
     ```
@@ -853,6 +956,8 @@ ls -l
 
   * `synopsis`
 
+
+
     ```shell
     nl [OPTION]... [FILE]...
     ```
@@ -861,7 +966,9 @@ ls -l
 
     * `-b` -> `--body-numbering=STYPE` 查看目标文件的内容，并打印行号。
       * `a` 不论是否为空行都打印行号 ，等同于 `cat -n` 
+
       * `t` 如果是空行不打印行号
+
 
     ```shell
     # root @ localhost in /home/jinm [16:50:12] 
@@ -891,10 +998,16 @@ ls -l
          8	dgdfgerre
     ```
 
+
+
     * `-n` -> `--number-format=FORMAT` 查看目标文件的内容，并以给定的位置打印行号。
+
       * `ln` 行号在屏幕的最左方显示
+
       * `rn` 行号在自己字段`-n`的最右方显示，且不加`0`
+
       * `rz` 行号在自己字段`-n`的最左方显示，且加`0` 
+
 
     ```shell
     # root @ localhost in /home/jinm [16:59:54] 
@@ -935,7 +1048,10 @@ ls -l
     000007	dgdfgerre
     ```
 
+
+
     * `-w` -> `--number-width=NUMBER` 查看目标文件的内容，并以指定的字符长度打印行号。
+
 
     ```shell
     # root @ localhost in /home/jinm [17:06:24] 
@@ -973,11 +1089,15 @@ ls -l
     ```
 
 
+
+
 * `more` -> `file perusal filter for crt viewing` 
 
   * 查看文件内容，当要查看的内容长度大于当前屏幕长度时，会在屏幕下方显示当前显示内容的百分百，不能向前翻页
 
   * `synopsis` 
+
+
 
     ```shell
     more -[options] file [...]
@@ -1013,6 +1133,8 @@ ls -l
 
   * `synopsis` 
 
+
+
     ```shell
     head -[OPTION]... [FILE]...
     head -[OPTION] [number]... [FILE]...
@@ -1021,6 +1143,7 @@ ls -l
   * `options`
 
     * `n` 具体的数字值，代表几行，即查看文件的前`n` 行。
+
 
     ```shell
     # root @ localhost in /home/jinm [18:01:30] 
@@ -1041,9 +1164,13 @@ ls -l
     ```
 
 
+
+
 * `tail` -> `output the last part of files` 
 
   * `synopsis` 
+
+
 
     ```shell
     tail [OPTION]... [FILE]...
@@ -1059,6 +1186,8 @@ ls -l
 * `od` -> `dump files in octal and other formats` 
 
   * `synopsis` 
+
+
 
     ```shell
     od [OPTION]... [FILE]...
