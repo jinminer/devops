@@ -154,7 +154,6 @@ chown [-R] username:groupname dirname/filename
     * `w` -> `write `权限值：2
     * `x` -> `execute` 权限值：1
     * `-` -> `denied` 拒绝访问 权限值:   0
-
   * 以`rwxr-x---`为例，不同`user`对应的`method-permission-value`如下：
 
     * `owner = 4 + 2 + 1 = 7 `
@@ -163,13 +162,17 @@ chown [-R] username:groupname dirname/filename
 
 
 
-    ```shell
-    # v1=owner-value; v2=group-value; v3=other-value;
-    chmod [-R] v1v2v3 filename/dirname
-    chmod -R 750 test
-    ```
+  ```shell
+  # v1=owner-value; v2=group-value; v3=other-value;
+  chmod [-R] v1v2v3 filename/dirname
+  chmod -R 750 test
+  ```
+
+
 
   * 这些权限值可以是`0,1,2,4`这四个数字中任意三个之和。
+
+
 
 * II. 符号型
 
@@ -208,43 +211,46 @@ chmod a-r test.txt
 * `[ r ]` -> `read contents in directory`
 
   * `beyond`和`jinm`属于同一个`group`，登录到`jinm`用户修改目录访问权限，再切换到`beyond`用户验证权限。
-
   * 当user对某个文件具有`[ r ]`权限时，才可以查看该目录中内容
 
 
 
-    ```shell
-    drwx------ 4 jinm   jinm 4096 Dec 14 14:31 test
-    [beyond@localhost jinm]$ ls test
-    ls: cannot open directory test: Permission denied
-    ```
+  ```
+  drwx------ 4 jinm   jinm 4096 Dec 14 14:31 test
+  [beyond@localhost jinm]$ ls test
+  ls: cannot open directory test: Permission denied
+  ```
+
+
 
   * 但是需要注意的是user必须同时具有`[ r ]`和`[ x ]`权限时才能查看详细信息
 
 
 
-    ```shell
-    [beyond@localhost jinm]$ ll
-    drwxr----- 4 jinm   jinm 4096 Dec 14 14:31 test
-    [beyond@localhost jinm]$ ls test
-    ls: cannot access test/c.txt: Permission denied
-    ls: cannot access test/a: Permission denied
-    ls: cannot access test/b: Permission denied
-    a  b  c.txt
-    ```
+  ```shell
+  [beyond@localhost jinm]$ ll
+  drwxr----- 4 jinm   jinm 4096 Dec 14 14:31 test
+  [beyond@localhost jinm]$ ls test
+  ls: cannot access test/c.txt: Permission denied
+  ls: cannot access test/a: Permission denied
+  ls: cannot access test/b: Permission denied
+  a  b  c.txt
+  ```
+
+
 
   * user必须同时具有`[ r ]`和`[ x ]`权限时才能进入该目录
 
 
 
-    ```shell
-    drwx-w---- 4 jinm   jinm 4096 Dec 14 14:31 test
-    [beyond@localhost jinm]$ cd test
-    bash: cd: test: Permission denied
-    ```
+  ```shell
+  drwx-w---- 4 jinm   jinm 4096 Dec 14 14:31 test
+  [beyond@localhost jinm]$ cd test
+  bash: cd: test: Permission denied
+  ```
+
 
 * `[ w ]` -> `modify contents of directory` 当给一个用户设定了目录`[ w ]`权限时，用户**进入该目录后**可进行以下操作：
-
   * 创建新的文件/目录
   * 删除已经存在的文件/目录(不管是属于谁)
   * 修改已经存在文件/目录的名称
@@ -252,7 +258,6 @@ chmod a-r test.txt
   * 注意
     * I. 用户对某一目录持有`[ w ]`权限时，可以在该目录下为所欲为，所以分配此权限时需谨慎。
     * II. 以上操作内容必须在用进入该目录的前提下，即权限必须是`[ rwx ]`，未设置`[ r ]` 和`[ x ]` ，无法进入目录，一切操作都是免谈。
-
 * `[ x ]` -> `access directory` 只有为用户设置了这个权限，才能进入。
 
 #### 综合练习
@@ -294,10 +299,6 @@ ls -l
 
 
 
-
-
-
-
 ## 磁盘与目录管理
 
 * `df` 
@@ -311,7 +312,6 @@ ls -l
 
 
   * `options`
-
     * `-a` 列出所有的文件系统，包括系统的虚拟文件。比如： `/proc` 等；
 
     * `-k` 以 `KBytes` 的容量显示各文件系统；
@@ -326,93 +326,95 @@ ls -l
 
     * `-i ` 以 `inode` 的数量代替`block`来展示用量
 
-  * `e.g.` 不指定参数，查看当前已挂载系统的所有可用空间
+      * `e.g.` 不指定参数，查看当前已挂载系统的所有可用空间
 
 
 
-    ```shell
-    # root @ localhost in ~ [22:10:53] 
-    df 
-    Filesystem     1K-blocks    Used Available Use% Mounted on
-    /dev/vda1       41151808 1922400  37115976   5% /
-    devtmpfs         1931336       0   1931336   0% /dev
-    tmpfs            1940844       0   1940844   0% /dev/shm
-    tmpfs            1940844     312   1940532   1% /run
-    tmpfs            1940844       0   1940844   0% /sys/fs/cgroup
-    tmpfs             388172       0    388172   0% /run/user/0
-    ```
-
-  * `e.g.` 查看当前已挂载系统的所有可用空间，并以易读的格式显示
+```shell
+# root @ localhost in ~ [22:10:53] 
+df 
+Filesystem     1K-blocks    Used Available Use% Mounted on
+/dev/vda1       41151808 1922400  37115976   5% /
+devtmpfs         1931336       0   1931336   0% /dev
+tmpfs            1940844       0   1940844   0% /dev/shm
+tmpfs            1940844     312   1940532   1% /run
+tmpfs            1940844       0   1940844   0% /sys/fs/cgroup
+tmpfs             388172       0    388172   0% /run/user/0
+```
 
 
 
-    ```shell
-    # root @ localhost in ~ [22:10:55] 
-    df -h
-    Filesystem      Size  Used Avail Use% Mounted on
-    /dev/vda1        40G  1.9G   36G   5% /
-    devtmpfs        1.9G     0  1.9G   0% /dev
-    tmpfs           1.9G     0  1.9G   0% /dev/shm
-    tmpfs           1.9G  312K  1.9G   1% /run
-    tmpfs           1.9G     0  1.9G   0% /sys/fs/cgroup
-    tmpfs           380M     0  380M   0% /run/user/0
-    ```
+  *  `e.g.` 查看当前已挂载系统的所有可用空间，并以易读的格式显示
+
+
+
+```shell
+# root @ localhost in ~ [22:10:55] 
+df -h
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/vda1        40G  1.9G   36G   5% /
+devtmpfs        1.9G     0  1.9G   0% /dev
+tmpfs           1.9G     0  1.9G   0% /dev/shm
+tmpfs           1.9G  312K  1.9G   1% /run
+tmpfs           1.9G     0  1.9G   0% /sys/fs/cgroup
+tmpfs           380M     0  380M   0% /run/user/0
+```
 
   * `e.g.` 查看当前已挂载系统的所有可用空间，并展示文件系统的类型
 
 
 
-    ```shell
-    df -T
-    Filesystem     Type     1K-blocks    Used Available Use% Mounted on
-    /dev/vda1      ext4      41151808 1922408  37115968   5% /
-    devtmpfs       devtmpfs   1931336       0   1931336   0% /dev
-    tmpfs          tmpfs      1940844       0   1940844   0% /dev/shm
-    tmpfs          tmpfs      1940844     312   1940532   1% /run
-    tmpfs          tmpfs      1940844       0   1940844   0% /sys/fs/cgroup
-    tmpfs          tmpfs       388172       0    388172   0% /run/user/0
-    
-    ```
+```shell
+df -T
+Filesystem     Type     1K-blocks    Used Available Use% Mounted on
+/dev/vda1      ext4      41151808 1922408  37115968   5% /
+devtmpfs       devtmpfs   1931336       0   1931336   0% /dev
+tmpfs          tmpfs      1940844       0   1940844   0% /dev/shm
+tmpfs          tmpfs      1940844     312   1940532   1% /run
+tmpfs          tmpfs      1940844       0   1940844   0% /sys/fs/cgroup
+tmpfs          tmpfs       388172       0    388172   0% /run/user/0
+```
 
   * `e.g.` 列出包括虚拟文件在内的所有文件系统的信息。
 
 
 
-    ```shell
-    df -a
-    Filesystem     1K-blocks    Used Available Use% Mounted on
-    rootfs                 -       -         -    - /
-    sysfs                  0       0         0    - /sys
-    proc                   0       0         0    - /proc
-    devtmpfs         1931336       0   1931336   0% /dev
-    securityfs             0       0         0    - /sys/kernel/security
-    tmpfs            1940844       0   1940844   0% /dev/shm
-    devpts                 0       0         0    - /dev/pts
-    tmpfs            1940844     368   1940476   1% /run
-    tmpfs            1940844       0   1940844   0% /sys/fs/cgroup
-    cgroup                 0       0         0    - /sys/fs/cgroup/systemd
-    pstore                 0       0         0    - /sys/fs/pstore
-    cgroup                 0       0         0    - /sys/fs/cgroup/devices
-    cgroup                 0       0         0    - /sys/fs/cgroup/hugetlb
-    cgroup                 0       0         0    - /sys/fs/cgroup/cpu,cpuacct
-    cgroup                 0       0         0    - /sys/fs/cgroup/net_cls,net_prio
-    cgroup                 0       0         0    - /sys/fs/cgroup/memory
-    cgroup                 0       0         0    - /sys/fs/cgroup/cpuset
-    cgroup                 0       0         0    - /sys/fs/cgroup/perf_event
-    cgroup                 0       0         0    - /sys/fs/cgroup/pids
-    cgroup                 0       0         0    - /sys/fs/cgroup/blkio
-    cgroup                 0       0         0    - /sys/fs/cgroup/freezer
-    configfs               0       0         0    - /sys/kernel/config
-    /dev/vda1       41151808 1922452  37115924   5% /
-    systemd-1              -       -         -    - /proc/sys/fs/binfmt_misc
-    mqueue                 0       0         0    - /dev/mqueue
-    debugfs                0       0         0    - /sys/kernel/debug
-    hugetlbfs              0       0         0    - /dev/hugepages
-    tmpfs             388172       0    388172   0% /run/user/0
-    binfmt_misc            0       0         0    - /proc/sys/fs/binfmt_misc
-    tmpfs             388172       0    388172   0% /run/user/1000
-    
-    ```
+```shell
+df -a
+Filesystem     1K-blocks    Used Available Use% Mounted on
+rootfs                 -       -         -    - /
+sysfs                  0       0         0    - /sys
+proc                   0       0         0    - /proc
+devtmpfs         1931336       0   1931336   0% /dev
+securityfs             0       0         0    - /sys/kernel/security
+tmpfs            1940844       0   1940844   0% /dev/shm
+devpts                 0       0         0    - /dev/pts
+tmpfs            1940844     368   1940476   1% /run
+tmpfs            1940844       0   1940844   0% /sys/fs/cgroup
+cgroup                 0       0         0    - /sys/fs/cgroup/systemd
+pstore                 0       0         0    - /sys/fs/pstore
+cgroup                 0       0         0    - /sys/fs/cgroup/devices
+cgroup                 0       0         0    - /sys/fs/cgroup/hugetlb
+cgroup                 0       0         0    - /sys/fs/cgroup/cpu,cpuacct
+cgroup                 0       0         0    - /sys/fs/cgroup/net_cls,net_prio
+cgroup                 0       0         0    - /sys/fs/cgroup/memory
+cgroup                 0       0         0    - /sys/fs/cgroup/cpuset
+cgroup                 0       0         0    - /sys/fs/cgroup/perf_event
+cgroup                 0       0         0    - /sys/fs/cgroup/pids
+cgroup                 0       0         0    - /sys/fs/cgroup/blkio
+cgroup                 0       0         0    - /sys/fs/cgroup/freezer
+configfs               0       0         0    - /sys/kernel/config
+/dev/vda1       41151808 1922452  37115924   5% /
+systemd-1              -       -         -    - /proc/sys/fs/binfmt_misc
+mqueue                 0       0         0    - /dev/mqueue
+debugfs                0       0         0    - /sys/kernel/debug
+hugetlbfs              0       0         0    - /dev/hugepages
+tmpfs             388172       0    388172   0% /run/user/0
+binfmt_misc            0       0         0    - /proc/sys/fs/binfmt_misc
+tmpfs             388172       0    388172   0% /run/user/1000
+```
+
+
 
 * `du`
 
@@ -423,74 +425,79 @@ ls -l
   du [OPTION]... --files0-from=F
   ```
 
+* ​	`options` 
 
-
-    * `options`
-
-        * `-a` 统计当前目录下，所有文件和子目录的占用量，多级子目录递归展示；
-        * `-h`以人们较易读的容量格式 `G/M`显示；
-        * `-s` 仅仅展示当前目录的总占用量，不会显示目录中的文件和子目录的占用量；
-        * `-k` 以 `KBytes` 列出容量显示；
-        * `-h` 以 `MBytes `列出容量显示；
-
-    * `e.g.` 递归显示当前目录下，所有子目录的占用量。
+  * `-a` 统计当前目录下，所有文件和子目录的占用量，多级子目录递归展示；
+      * `-h`以人们较易读的容量格式 `G/M`显示；
+      * `-s` 仅仅展示当前目录的总占用量，不会显示目录中的文件和子目录的占用量；
+      * `-k` 以 `KBytes` 列出容量显示；
+      * `-h` 以 `MBytes `列出容量显示；
+  * `e.g.` 递归显示当前目录下，所有子目录的占用量。
 
 
 
-      ```shell
-      du
-      4	./test/a
-      4	./test/b
-      12	./test
-      4	./dir-jinm/test
-      8	./dir-jinm
-      52	.
-      ```
-
-    * `e.g.` 递归显示当前目录下，所有子目录以及文件的占用量。
+  ```shell
+  du
+  4	./test/a
+  4	./test/b
+  12	./test
+  4	./dir-jinm/test
+  8	./dir-jinm
+  52	.
+  ```
 
 
 
-      ```shell
-      du -a
-      0	./test1.txt
-      4	./.zshrc
-      4	./.bash_profile
-      0	./test/c.txt
-      4	./test/a
-      4	./test/b
-      12	./test
-      4	./dir-jinm/test
-      8	./dir-jinm
-      4	./.bashrc
-      4	./.bash_logout
-      4	./.viminfo
-      4	./file-jinm.txt
-      4	./.bash_history
-      52	.
-      ```
 
-    * `e.g.` 统计当前目录的总占用量。
+
+  *  `e.g.` 递归显示当前目录下，所有子目录以及文件的占用量。
 
 
 
-      ```shell
-      du -s
-      52	.
-      ```
+  ```shell
+    du -a
+    0	./test1.txt
+    4	./.zshrc
+    4	./.bash_profile
+    0	./test/c.txt
+    4	./test/a
+    4	./test/b
+    12	./test
+    4	./dir-jinm/test
+    8	./dir-jinm
+    4	./.bashrc
+    4	./.bash_logout
+    4	./.viminfo
+    4	./file-jinm.txt
+    4	./.bash_history
+    52	.
+  ```
 
-    * `e.g.` 查看当前目录下，每个目录和文件各自的占用量，不包括隐藏文件，亦不会递归展示子目录。
+
+
+  *  `e.g.` 统计当前目录的总占用量。
 
 
 
-      ```shell
-      #使用通配符 * 匹配当前目录下的所有一级子目录和一级子文件。
-      du -sm /home/jinm/*
-      1	/home/jinm/dir-jinm
-      1	/home/jinm/file-jinm.txt
-      1	/home/jinm/test
-      0	/home/jinm/test1.txt
-      ```
+  ```shell
+   du -s
+   52	.
+  ```
+
+
+
+  *  `e.g.` 查看当前目录下，每个目录和文件各自的占用量，不包括隐藏文件，亦不会递归展示子目录。
+
+
+
+  ```shell
+    #使用通配符 * 匹配当前目录下的所有一级子目录和一级子文件。
+    du -sm /home/jinm/*
+    1	/home/jinm/dir-jinm
+    1	/home/jinm/file-jinm.txt
+    1	/home/jinm/test
+    0	/home/jinm/test1.txt
+  ```
 
 
 
@@ -500,116 +507,115 @@ ls -l
 
     * 不能跨`filesystem`域建立链接
     * 不能链接目录，`link` 只能指向硬盘中某个实体文件的`inode` 
-
   * `symbolic link` 创建一个独立的链接文件，会占用源文件的 `inode` 和 `block` ，当指向的源文件被删除时该链接文件就不能打开。
-
   * `hard link`指向源文件的`inode`，`symbolic link`链接指向源文件的`inode`的指针。所以只要硬盘中的数据还在，`hard link`就不会失效；对于`symbolic link`而言，只要他指向的文件指针失效，它既失效。
 
+
+
+  ```shell
+  ln [OPTION] TARGET DIRECTORY  
+  ```
+
+
+
   * `options` 
+    *  `ln` 不加任何参数，就是`hard link` 
+    *  `-s` 就是`symbolic link` 
+    *  `-f` 删除已存在的目标文件，即如果目标文件已存在，会主动删除后再建立 
+  *  `e.g.` 将`/etc/passwd` 复制到`/tmp`底下，查看`inode` 和 `block` 
 
 
 
-    ```shell
-    ln [OPTION] TARGET DIRECTORY                     
-    ```
+  ```shell
+  # root @ localhost in /tmp [10:11:54] 
+  cp -a /etc/passwd .
+  
+  # root @ localhost in /tmp [10:12:25] 
+  du -sb passwd
+  1123	passwd
+  
+  # root @ localhost in /tmp [10:12:34] 
+  du -sb /etc/passwd
+  1123	/etc/passwd
+  
+  # root @ localhost in /tmp [10:12:50] 
+  df -i passwd
+  Filesystem      Inodes IUsed   IFree IUse% Mounted on
+  /dev/vda1      2621440 43634 2577806    2% /
+  # root @ localhost in /tmp [10:12:59] 
+  $ df -i /etc/passwd
+  Filesystem      Inodes IUsed   IFree IUse% Mounted on
+  /dev/vda1      2621440 43634 2577806    2% /
+  ```
 
 
 
-    * `ln` 不加任何参数，就是`hard link` 
-    * `-s` 就是`symbolic link` 
-    * `-f` 删除已存在的目标文件，即如果目标文件已存在，会主动删除后再建立
-
-  * `e.g.` 将`/etc/passwd` 复制到`/tmp`底下，查看`inode` 和 `block` 
+  *  `e.g.` 将 `/tmp/passwd` 制作 `hard link` 成为 `passwd-hd` 文件。查看 `passwd` 和 `passwd-hd`文件的查看`inode` 和 `block` 。
 
 
 
-    ```shell
-    # root @ localhost in /tmp [10:11:54] 
-    cp -a /etc/passwd .
-    
-    # root @ localhost in /tmp [10:12:25] 
-    du -sb passwd
-    1123	passwd
-    
-    # root @ localhost in /tmp [10:12:34] 
-    du -sb /etc/passwd
-    1123	/etc/passwd
-    
-    # root @ localhost in /tmp [10:12:50] 
-    df -i passwd
-    Filesystem      Inodes IUsed   IFree IUse% Mounted on
-    /dev/vda1      2621440 43634 2577806    2% /
-    # root @ localhost in /tmp [10:12:59] 
-    $ df -i /etc/passwd
-    Filesystem      Inodes IUsed   IFree IUse% Mounted on
-    /dev/vda1      2621440 43634 2577806    2% /
-    ```
-
-  * `e.g.` 将 `/tmp/passwd` 制作 `hard link` 成为 `passwd-hd` 文件。查看 `passwd` 和 `passwd-hd`文件的查看`inode` 和 `block` 。
+  ```shell
+  # root @ localhost in /tmp [10:14:53] 
+  ln passwd passwd-hd
+  # root @ localhost in /tmp [10:15:11] 
+  ll 
+  -rw-r--r-- 2 root root 1.1K Dec 18 05:07 passwd
+  -rw-r--r-- 2 root root 1.1K Dec 18 05:07 passwd-hd
+  
+  # root @ localhost in /tmp [10:15:16] 
+  du -sb passwd-hd
+  1123	passwd-hd
+  
+  # root @ localhost in /tmp [10:15:58]  
+  ls -il passwd*
+  393226 -rw-r--r-- 2 root root 1123 Dec 18 05:07 passwd
+  393226 -rw-r--r-- 2 root root 1123 Dec 18 05:07 passwd-hd
+  ```
 
 
 
-    ```shell
-    # root @ localhost in /tmp [10:14:53] 
-    ln passwd passwd-hd
-    # root @ localhost in /tmp [10:15:11] 
-    ll 
-    -rw-r--r-- 2 root root 1.1K Dec 18 05:07 passwd
-    -rw-r--r-- 2 root root 1.1K Dec 18 05:07 passwd-hd
-    
-    # root @ localhost in /tmp [10:15:16] 
-    du -sb passwd-hd
-    1123	passwd-hd
-    
-    # root @ localhost in /tmp [10:15:58]  
-    ls -il passwd*
-    393226 -rw-r--r-- 2 root root 1123 Dec 18 05:07 passwd
-    393226 -rw-r--r-- 2 root root 1123 Dec 18 05:07 passwd-hd
-    
-    ```
-
-  * `e.g.` 将将 `/tmp/passwd` 制作 `symbolic link` 成为 `passwd-so` 文件，查看容量。
+  *  `e.g.` 将将 `/tmp/passwd` 制作 `symbolic link` 成为 `passwd-so` 文件，查看容量。
 
 
 
-    ```shell
-    # root @ localhost in /tmp [10:17:25] 
-    ln -s passwd passwd-so
-    
-    # root @ localhost in /tmp [10:30:32] 
-    ll 
-    -rw-r--r-- 2 root root 1.1K Dec 18 05:07 passwd
-    -rw-r--r-- 2 root root 1.1K Dec 18 05:07 passwd-hd
-    lrwxrwxrwx 1 root root    6 Dec 18 10:30 passwd-so -> passwd
-    
-    
-    # root @ localhost in /tmp [10:30:34] 
-    ls -li passwd*
-    393226 -rw-r--r-- 2 root root 1123 Dec 18 05:07 passwd
-    393226 -rw-r--r-- 2 root root 1123 Dec 18 05:07 passwd-hd
-    393355 lrwxrwxrwx 1 root root    6 Dec 18 10:30 passwd-so -> passwd
-    
-    ```
+  ```shell
+  # root @ localhost in /tmp [10:17:25] 
+  ln -s passwd passwd-so
+  
+  # root @ localhost in /tmp [10:30:32] 
+  ll 
+  -rw-r--r-- 2 root root 1.1K Dec 18 05:07 passwd
+  -rw-r--r-- 2 root root 1.1K Dec 18 05:07 passwd-hd
+  lrwxrwxrwx 1 root root    6 Dec 18 10:30 passwd-so -> passwd
+  
+  # root @ localhost in /tmp [10:30:34] 
+  ls -li passwd*
+  393226 -rw-r--r-- 2 root root 1123 Dec 18 05:07 passwd
+  393226 -rw-r--r-- 2 root root 1123 Dec 18 05:07 passwd-hd
+  393355 lrwxrwxrwx 1 root root    6 Dec 18 10:30 passwd-so -> passwd
+  ```
 
 
 
-    `passwd-so`指向的`inode number`变了，这是一个新的文件。这个文件的内容时指向`passwd`的，大小为`6bytes`，这个大小式因为链接文件的内容是连结对象的文件名，也就是`passwd`，所以你需要连结的源文件名(可以是目录)有多少个字符，这个链接文件就有多大。而且这时候我们发现硬盘容量和`inode`的使用数都变了。
-
-  * `e.g.` 删除源文件`passwd`查看`passwd-hd`和`passwd-so`是否正常，能够开启？
+  > `passwd-so`指向的`inode number`变了，这是一个新的文件。这个文件的内容时指向`passwd`的，大小为`6bytes`，这个大小式因为链接文件的内容是连结对象的文件名，也就是`passwd`，所以你需要连结的源文件名(可以是目录)有多少个字符，这个链接文件就有多大。而且这时候我们发现硬盘容量和`inode`的使用数都变了。
 
 
 
-    ```shell
-    # root @ localhost in /tmp [10:44:38] 
-    cat passwd-hd
-    root:x:0:0:root:/root:/usr/bin/zsh
-    bin:x:1:1:bin:/bin:/sbin/nologin
-    daemon:x:2:2:daemon:/sbin:/sbin/nologin
-    
-    # root @ localhost in /tmp [10:44:46] 
-    cat passwd-so
-    cat: passwd-so: No such file or directory
-    ```
+  *  `e.g.` 删除源文件`passwd`查看`passwd-hd`和`passwd-so`是否正常，能够开启？
+
+
+
+  ```shell
+  # root @ localhost in /tmp [10:44:38] 
+  cat passwd-hd
+  root:x:0:0:root:/root:/usr/bin/zsh
+  bin:x:1:1:bin:/bin:/sbin/nologin
+  daemon:x:2:2:daemon:/sbin:/sbin/nologin
+  
+  # root @ localhost in /tmp [10:44:46] 
+  cat passwd-so
+  cat: passwd-so: No such file or directory
+  ```
 
 
 
@@ -632,59 +638,67 @@ ls -l
 
 * 目录操作指令
   * `cd`  -> `change directory` 切换目录
-
   * `pwd` -> `print working directory` 查看当前工作目录的绝对路径
 
     * `-P` -> `physical` 查看真实路径。即对于 `link` 路径，会显示完整路径。
-
   * `mkdir`  -> `make directory` 创建一个新的目录
 
-  * 
-
-    ```shell
-    mkdir [options] file
-    ```
 
 
-
-    * `-m` -> `mode` 创建目录并设置该目录的操作权限。如果不加该参数，系统会预设权限值。
+  ```shell
+  mkdir [options] file
+  ```
 
 
 
-      ```shell
-      mkdir -m 711 test
-      ```
+  *  `-m` -> `mode` 创建目录并设置该目录的操作权限。如果不加该参数，系统会预设权限值。
 
-    * `-p` -> `parents` 递归创建多级目录，如果路径默认已经存在则沿用旧目录
 
-      ```shell
-      mkdir -p dir1/dir2/dir3
-      ```
 
-  * `rmdir` -> `remove directory` 删除目录，只能删除空目录
+  ```shell
+  mkdir -m 711 test
+  ```
+
+
+
+  *  `-p` -> `parents` 递归创建多级目录，如果路径默认已经存在则沿用旧目录
+
+
+
+  ```shell
+  mkdir -p dir1/dir2/dir3
+  ```
+
+
+
+  *  `rmdir` -> `remove directory` 删除目录，只能删除空目录
 
     * `-p` 递归删除多级空目录；e.g. `'rmdir -p a/b/c' is similar to 'rmdir a/b/c a/b a'` 
     * `rm -rf directory` 强制删除目标目录中的所有内容，删库跑路喽~~~
 
-* `$PATH` 配置全局环境变量
+*  `$PATH` 配置全局环境变量
 
   * 将某个路径配置到该变量后，在任意目录下都可执行该路径中的可执行文件
 
 
 
-    ```shell
-    PATH="$PATH":/directory
-    ```
+  ```shell
+  PATH="$PATH":/directory
+  ```
+
+
 
   * 不配置`PATH` 使用绝对路径来访问，前提知道要执行文件的准确绝对路径
 
 
 
-    ```shell
-    /directory/filename
-    
-    ./directory/filename
-    ```
+  ```shell
+  /directory/filename
+  
+  ./directory/filename
+  ```
+
+
 
   * 当`PATH` 中配置了同一个可执行文件的多个路径，则按照配置的顺序，系统先查到谁就会执行谁
 
@@ -694,114 +708,106 @@ ls -l
 
 * `ls` -> `list directory contents` 列出文件/目录的信息
 
-  * `synopsis` 
+  *  `synopsis` 
 
 
 
-    ```shell
-    ls [OPTION]... [FILE]...
-    ```
+  ```shell
+  ls [OPTION]... [FILE]...
+  ```
 
-  * `options` 
 
-    * `-a` -> `--all` 列出目标目录下所有的子目录/文件，包括以`.`开头的文件/目录
 
-    * `-A` -> `--almost-all` 列出目标目录下所有的子目录/文件，不包括以`.`和`..`开头的文件/目录
+    *  `options` 
 
-    * `-d` -> `--directory` 列出目标目录自己本身，不包括目录下的其他内容
+      *  `-a` -> `--all` 列出目标目录下所有的子目录/文件，包括以`.`开头的文件/目录
+      *  `-A` -> `--almost-all` 列出目标目录下所有的子目录/文件，不包括以`.`和`..`开头的文件/目录
+      *  `-d` -> `--directory` 列出目标目录自己本身，不包括目录下的其他内容
+      *  `-f` 列出目标目录下所有的子目录/文件，但不会对列出的内容进行排序，也不会用颜色区分文件/目录的类型
+      *  `-F` -> `--classify` 列出目标目录下所有的子目录/文件，并在每个条目后面追加文件/目录的类型`(one of */=>@|)`，不包括以`.`和`..`开头的文件/目录
+      *  `-h` -> `--human-readable` 列出目标目录下所有的子目录/文件，并以人易读的方式展示容量大小，不包括以`.`和`..`开头的文件/目录。`e.g., 1K 234M 2G`
+      *  `-i` -> `--inode` 列出目标目录下所有的目录/文件，并展示文件的`inode`索引，不包括以`.`和`..`开头的文件/目录。
+      *  `-l` -> `--all` 以长列表格式列出目标目录下的所有文件，不包括以`.`和`..`开头的文件/目录。
+      *  `-n` -> `--numeric-uid-gid` 以长列表格式列出目标目录下的所有文件，并展示`userid`和`groupid`的数字值，不包括以`.`和`..`开头的文件/目录。
+      *  `-r` -> `--reverse`  倒序列出目标目录下所有的目录/文件，不包括以`.`和`..`开头的文件/目录。
+      *  `-R` -> `--recursive` 递归显示目标目录下所有的子目录/文件，不包括以`.`和`..`开头的文件/目录。
+      *  `-S` 列出目标目录下所有目录/文件，并以文件容量大小的倒序显示，不包括以`.`和`..`开头的文件/目录。
+      *  `-t` 列出目标目录下所有的目录/文件，并以最近修改时间倒序显示，不包括以`.`和`..`开头的文件/目录。
+      *  `--color=[OPTION]` 列出目标目录下所有目录/文件，不包括以`.`和`..`开头的文件/目录。
+        *  `never` 不根据文件类型显示相应的颜色
+        *  `auto ` 系统自行判断是否根据文件类型显示颜色
+        * `always ` 根据文件类型显示相应的颜色
 
-    * `-f` 列出目标目录下所有的子目录/文件，但不会对列出的内容进行排序，也不会用颜色区分文件/目录的类型
-
-    * `-F` -> `--classify` 列出目标目录下所有的子目录/文件，并在每个条目后面追加文件/目录的类型`(one of */=>@|)`，不包括以`.`和`..`开头的文件/目录
-
-    * `-h` -> `--human-readable` 列出目标目录下所有的子目录/文件，并以人易读的方式展示容量大小，不包括以`.`和`..`开头的文件/目录。`e.g., 1K 234M 2G`
-
-    * `-i` -> `--inode` 列出目标目录下所有的目录/文件，并展示文件的`inode`索引，不包括以`.`和`..`开头的文件/目录。
-
-    * `-l` -> `--all` 以长列表格式列出目标目录下的所有文件，不包括以`.`和`..`开头的文件/目录。
-
-    * `-n` -> `--numeric-uid-gid` 以长列表格式列出目标目录下的所有文件，并展示`userid`和`groupid`的数字值，不包括以`.`和`..`开头的文件/目录。
-
-    * `-r` -> `--reverse`  倒序列出目标目录下所有的目录/文件，不包括以`.`和`..`开头的文件/目录。
-
-    * `-R` -> `--recursive` 递归显示目标目录下所有的子目录/文件，不包括以`.`和`..`开头的文件/目录。
-
-    * `-S` 列出目标目录下所有目录/文件，并以文件容量大小的倒序显示，不包括以`.`和`..`开头的文件/目录。
-
-    * `-t` 列出目标目录下所有的目录/文件，并以最近修改时间倒序显示，不包括以`.`和`..`开头的文件/目录。
-
-    * `--color=[OPTION]` 列出目标目录下所有目录/文件，不包括以`.`和`..`开头的文件/目录。
-
-      * `never` 不根据文件类型显示相应的颜色
-
-      * `auto ` 系统自行判断是否根据文件类型显示颜色
-
-      * `always ` 根据文件类型显示相应的颜色
 
 
       ```shell
-      ls --color=auto jinm/
-      dir-jinm  file-jinm.txt  test  test1  test1.txt  test2  test3
-      
-      # root @ localhost in /home [0:35:07] 
-      ls --color=never jinm/
-      dir-jinm  file-jinm.txt  test  test1  test1.txt  test2  test3
-      
-      # root @ localhost in /home [0:35:18] 
-      ls --color=always jinm/
-      dir-jinm  file-jinm.txt  test  test1  test1.txt  test2  test3
+        ls --color=auto jinm/
+        dir-jinm  file-jinm.txt  test  test1  test1.txt  test2  test3
+        
+        # root @ localhost in /home [0:35:07] 
+        ls --color=never jinm/
+        dir-jinm  file-jinm.txt  test  test1  test1.txt  test2  test3
+        
+        # root @ localhost in /home [0:35:18] 
+        ls --color=always jinm/
+        dir-jinm  file-jinm.txt  test  test1  test1.txt  test2  test3
       ```
 
-    * `--full-time` 以长列表的方式列出目标目录下所有文件/目录，并展示详细的最近修改时间`year-month-day hour:minutes:seconds.millisecondstimestamp` ，不包括以`.`和`..`开头的文件/目录。
+
+
+      *  `--full-time` 以长列表的方式列出目标目录下所有文件/目录，并展示详细的最近修改时间`year-month-day hour:minutes:seconds.millisecondstimestamp` ，不包括以`.`和`..`开头的文件/目录。
+
+
 
       ```shell
-      # root @ localhost in /home [0:35:27] 
-      ls --full-time jinm/
-      drwxr-xr-x 3 beyond jinm 4096 2018-12-13 17:25:35.211053250 +0800 dir-jinm
-      -rw-rw-r-- 1 jinm   jinm   17 2018-12-13 16:37:44.331346441 +0800 file-jinm.txt
-      drwx-w---- 2 jinm   jinm 4096 2018-12-18 16:05:32.386878919 +0800 test
-      drwxrwxr-x 3 root   root 4096 2018-12-18 16:06:17.452924751 +0800 test1
-      -rw-r--r-- 1 beyond jinm    0 2018-12-13 17:56:32.577884166 +0800 test1.txt
-      drwxrwxr-x 2 root   root 4096 2018-12-18 15:52:59.109674461 +0800 test2
-      drwxrwxr-x 2 root   root 4096 2018-12-18 15:54:09.907889943 +0800 test3
+        # root @ localhost in /home [0:35:27] 
+        ls --full-time jinm/
+        drwxr-xr-x 3 beyond jinm 4096 2018-12-13 17:25:35.211053250 +0800 dir-jinm
+        -rw-rw-r-- 1 jinm   jinm   17 2018-12-13 16:37:44.331346441 +0800 file-jinm.txt
+        drwx-w---- 2 jinm   jinm 4096 2018-12-18 16:05:32.386878919 +0800 test
+        drwxrwxr-x 3 root   root 4096 2018-12-18 16:06:17.452924751 +0800 test1
+        -rw-r--r-- 1 beyond jinm    0 2018-12-13 17:56:32.577884166 +0800 test1.txt
+        drwxrwxr-x 2 root   root 4096 2018-12-18 15:52:59.109674461 +0800 test2
+        drwxrwxr-x 2 root   root 4096 2018-12-18 15:54:09.907889943 +0800 test3
       ```
 
-    * `--time=[OPTION]` 根据权限修改时间列出目标目录中的文件/目录
 
-      * `atime` 以最近修改文件操作权限时间的倒序展示
 
-      * `ctime` 以最近修改用户组/拥有者权限时间的倒序展示
+      *  `--time=[OPTION]` 根据权限修改时间列出目标目录中的文件/目录
+        *  `atime` 以最近修改文件操作权限时间的倒序展示
+        *  `ctime` 以最近修改用户组/拥有者权限时间的倒序展示
+
 
 
       ```shell
       # 示例目录初始状态
-      # root @ localhost in ~jinm [1:01:49] 
-      ls -l
-      drwxr-xr-x 3 beyond jinm 4096 Dec 13 17:25 dir-jinm
-      -rw-rw-r-- 1 jinm   jinm   17 Dec 13 16:37 file-jinm.txt
-      drwx-w---- 2 jinm   jinm 4096 Dec 18 16:05 test
-      drwxrwxrwx 3 root   root 4096 Dec 18 16:06 test1
-      -rw-r--r-- 1 beyond jinm    0 Dec 13 17:56 test1.txt
-      drwxrwxr-x 2 root   root 4096 Dec 18 15:52 test2
-      drwxrwxr-x 2 root   root 4096 Dec 18 15:54 test3
-      ----------------------------------------------------------------------------------------------
-      
-      # 修改test的拥有者
-      # root @ localhost in ~jinm [1:02:19] 
-      chown beyond test
-      
-      # root @ localhost in ~jinm [1:05:20] 
-      ls --time=ctime 
-      test  test1  test3  test2  test1.txt  dir-jinm  file-jinm.txt
-      ----------------------------------------------------------------------------------------------
-      
-      # 修改test1的文件操作权限
-      # root @ localhost in ~jinm [1:19:51] 
-      $ chmod 700 test1
-      
-      # root @ localhost in ~jinm [1:21:02] 
-      ls --time=atime 
-      test1  test  dir-jinm  test2  test3  test1.txt  file-jinm.txt
+        # root @ localhost in ~jinm [1:01:49] 
+        ls -l
+        drwxr-xr-x 3 beyond jinm 4096 Dec 13 17:25 dir-jinm
+        -rw-rw-r-- 1 jinm   jinm   17 Dec 13 16:37 file-jinm.txt
+        drwx-w---- 2 jinm   jinm 4096 Dec 18 16:05 test
+        drwxrwxrwx 3 root   root 4096 Dec 18 16:06 test1
+        -rw-r--r-- 1 beyond jinm    0 Dec 13 17:56 test1.txt
+        drwxrwxr-x 2 root   root 4096 Dec 18 15:52 test2
+        drwxrwxr-x 2 root   root 4096 Dec 18 15:54 test3
+        ----------------------------------------------------------------------------------------------
+        
+        # 修改test的拥有者
+        # root @ localhost in ~jinm [1:02:19] 
+        chown beyond test
+        
+        # root @ localhost in ~jinm [1:05:20] 
+        ls --time=ctime 
+        test  test1  test3  test2  test1.txt  dir-jinm  file-jinm.txt
+        ----------------------------------------------------------------------------------------------
+        
+        # 修改test1的文件操作权限
+        # root @ localhost in ~jinm [1:19:51] 
+        $ chmod 700 test1
+        
+        # root @ localhost in ~jinm [1:21:02] 
+        ls --time=atime 
+        test1  test  dir-jinm  test2  test3  test1.txt  file-jinm.txt
       ```
 
 
@@ -809,28 +815,29 @@ ls -l
 
 * `cp` -> `copy files and directories` 
 
-  * `synopsis` 
+  *  `synopsis` 
 
 
 
-    ```shell
-    cp -[options] source target
-    
-    # 将多个目录一次性复制到同一个目标目录中去
-    cp -[options] source1 source2 ... sourcen target
-    ```
+  ```shell
+  cp -[options] source target
+  
+  # 将多个目录一次性复制到同一个目标目录中去
+  cp -[options] source1 source2 ... sourcen target
+  ```
 
-  * `options` 
 
-    * `-a` -> `--archive` 等同于 `-pdr` 
-    * `-d` -> `--no-dereference --preserve=links`  若来源为`link file` 时，复制该链接文件的属性而非被`link` 的真实文件的`inode`。
-    * `-f` -> `--force`  强制复制。如果目标目录无法访问(比如文件重复等)，则删除该目录，并且重试。
-    * `-i` -> `--interactive` 若复制过程中出现覆盖情况，则会进行提示。
-    * `-l` -> `--link` 复制到到目标目录内容的`hard link` 而不是文件本身
-    * `-p` -> `--preserve`  将复制内容的文件属性也进行复制，文件属性保持原状，不会由系统预设。
-    * `-r` -> `--recursive` 递归复制源目录，包括其子目录和子文件。
-    * `-s` -> `--symbolic-link` 以符号链接`symbolic link`的方式复制内容。
-    * `-u` -> `--update` 当`source` 是新建的，`destination` 被删除了，才会执行复制过程。当`destination`与`source`有差异时才进行复制，可以用于备份等工作。
+
+    *  `options` 
+      *  `-a` -> `--archive` 等同于 `-pdr` 
+      *  `-d` -> `--no-dereference --preserve=links`  若来源为`link file` 时，复制该链接文件的属性而非被`link` 的真实文件的`inode`。
+      *  `-f` -> `--force`  强制复制。如果目标目录无法访问(比如文件重复等)，则删除该目录，并且重试。
+      * `-i` -> `--interactive` 若复制过程中出现覆盖情况，则会进行提示。
+      *  `-l` -> `--link` 复制到到目标目录内容的`hard link` 而不是文件本身
+      *  `-p` -> `--preserve`  将复制内容的文件属性也进行复制，文件属性保持原状，不会由系统预设。
+      * `-r` -> `--recursive` 递归复制源目录，包括其子目录和子文件。
+      * `-s` -> `--symbolic-link` 以符号链接`symbolic link`的方式复制内容。
+      *  `-u` -> `--update` 当`source` 是新建的，`destination` 被删除了，才会执行复制过程。当`destination`与`source`有差异时才进行复制，可以用于备份等工作。
 
   * 当前用户必须要有`source` 的`read`权限才能进行复制
 
@@ -940,13 +947,16 @@ ls -l
 
 * `tac` -> `concatenate in reverse`
 
-  * `synopsis` 
+  *  `synopsis` 
 
 
 
-    ```shell
-    tac [OPTION]... [FILE]...
-    ```
+  ```shell
+  tac [OPTION]... [FILE]...
+  ```
+
+
+
 
   * `cat` 是按行号顺序显示内容，`tac` 恰好相反是按行号的倒序显示
 
@@ -954,20 +964,22 @@ ls -l
 
 * `nl` -> `number lines of files` 
 
-  * `synopsis`
+  *  `synopsis` 
 
 
 
-    ```shell
-    nl [OPTION]... [FILE]...
-    ```
+  ```shell
+  nl [OPTION]... [FILE]...
+  ```
+
+
 
   * `options`
 
     * `-b` -> `--body-numbering=STYPE` 查看目标文件的内容，并打印行号。
       * `a` 不论是否为空行都打印行号 ，等同于 `cat -n` 
-
       * `t` 如果是空行不打印行号
+
 
 
     ```shell
@@ -1000,13 +1012,11 @@ ls -l
 
 
 
-    * `-n` -> `--number-format=FORMAT` 查看目标文件的内容，并以给定的位置打印行号。
+    *  `-n` -> `--number-format=FORMAT` 查看目标文件的内容，并以给定的位置打印行号。
+      *  `ln` 行号在屏幕的最左方显示
+      *  `rn` 行号在自己字段`-n`的最右方显示，且不加`0`
+      *  `rz` 行号在自己字段`-n`的最左方显示，且加`0` 
 
-      * `ln` 行号在屏幕的最左方显示
-
-      * `rn` 行号在自己字段`-n`的最右方显示，且不加`0`
-
-      * `rz` 行号在自己字段`-n`的最左方显示，且加`0` 
 
 
     ```shell
@@ -1050,7 +1060,8 @@ ls -l
 
 
 
-    * `-w` -> `--number-width=NUMBER` 查看目标文件的内容，并以指定的字符长度打印行号。
+    *  `-w` -> `--number-width=NUMBER` 查看目标文件的内容，并以指定的字符长度打印行号。
+
 
 
     ```shell
@@ -1094,14 +1105,15 @@ ls -l
 * `more` -> `file perusal filter for crt viewing` 
 
   * 查看文件内容，当要查看的内容长度大于当前屏幕长度时，会在屏幕下方显示当前显示内容的百分百，不能向前翻页
-
   * `synopsis` 
 
 
 
-    ```shell
-    more -[options] file [...]
-    ```
+  ```shell
+  more -[options] file [...]
+  ```
+
+
 
   * `operation` 
 
@@ -1131,37 +1143,39 @@ ls -l
 
 * `head` -> `output the first part of files` 
 
-  * `synopsis` 
+  *  `synopsis` 
 
 
 
-    ```shell
-    head -[OPTION]... [FILE]...
-    head -[OPTION] [number]... [FILE]...
-    ```
-
-  * `options`
-
-    * `n` 具体的数字值，代表几行，即查看文件的前`n` 行。
+  ```shell
+  head -[OPTION]... [FILE]...
+  head -[OPTION] [number]... [FILE]...
+  ```
 
 
-    ```shell
-    # root @ localhost in /home/jinm [18:01:30] 
-    head -5 hello.txt
-    jjkfdsl
-    
-    jkdsljf
-    324234
-    435342$%$#%
-    
-    # root @ localhost in /home/jinm [18:01:40] 
-    head -n 5 hello.txt
-    jjkfdsl
-    
-    jkdsljf
-    324234
-    435342$%$#%
-    ```
+
+    *  `options`
+      * `n` 具体的数字值，代表几行，即查看文件的前`n` 行。
+
+
+
+  ```shell
+  # root @ localhost in /home/jinm [18:01:30] 
+  head -5 hello.txt
+  jjkfdsl
+  
+  jkdsljf
+  324234
+  435342$%$#%
+  
+  # root @ localhost in /home/jinm [18:01:40] 
+  head -n 5 hello.txt
+  jjkfdsl
+  
+  jkdsljf
+  324234
+  435342$%$#%
+  ```
 
 
 
@@ -1172,14 +1186,15 @@ ls -l
 
 
 
-    ```shell
-    tail [OPTION]... [FILE]...
-    ```
+  ```shell
+  tail [OPTION]... [FILE]...
+  ```
 
-  * `options` 
 
-    * `n` 具体的数字值，代表几行，即查看文件的后 `n` 行。
-    * `f` 前面接具体的`num`数字值，代表几行。要注意的是该参数表示实时查看，如果别查看的文件内容一直更改增加，增加的内容会按照`num`个行数不断`append`到屏幕末尾。 
+
+    * `options` 
+      *  `n` 具体的数字值，代表几行，即查看文件的后 `n` 行。
+      * `f` 前面接具体的`num`数字值，代表几行。要注意的是该参数表示实时查看，如果别查看的文件内容一直更改增加，增加的内容会按照`num`个行数不断`append`到屏幕末尾。 
 
 
 
@@ -1189,11 +1204,9 @@ ls -l
 
 
 
-    ```shell
-    od [OPTION]... [FILE]...
-    ```
-
-  * 
+  ```shell
+  od [OPTION]... [FILE]...
+  ```
 
 
 
