@@ -34,7 +34,7 @@
 
 
 
-![user-group](https://github.com/jinminer/docs/blob/master/devops/operating-system/linux/user-group.png)
+![user-group](https://raw.githubusercontent.com/jinminer/docs/master/devops/operating-system/linux/user-group.png)
 
 
 
@@ -54,7 +54,11 @@
 
 以`root`用户登录`Linux`，执行`ls -a`指令，列出当前目录`/root`所有文件和目录以及各自的详细属性。
 
-![file-list](https://github.com/jinminer/docs/blob/master/devops/operating-system/linux/file-list.png)
+
+
+![file-list](https://raw.githubusercontent.com/jinminer/docs/master/devops/operating-system/linux/file-list.png)
+
+
 
 * 如图所示，每一行代表一个文件/目录的所有信息，不同的列表示文件/目录的不同属性，共有7项属性。以`.oh-my-zsh`文件为例：
 
@@ -66,7 +70,7 @@
 
 
 
-    ![file-detail](https://github.com/jinminer/docs/blob/master/devops/operating-system/linux/file-detail.png)
+![file-detail](https://raw.githubusercontent.com/jinminer/docs/master/devops/operating-system/linux/file-detail.png)
 
 
 
@@ -92,7 +96,7 @@
 
 
 
-![](https://github.com/jinminer/docs/blob/master/devops/operating-system/linux/file-method-detail.png)
+![file-method-detail](https://raw.githubusercontent.com/jinminer/docs/master/devops/operating-system/linux/file-method-detail.png)
 
 
 
@@ -154,23 +158,20 @@ chown [-R] username:groupname dirname/filename
     * `w` -> `write `权限值：2
     * `x` -> `execute` 权限值：1
     * `-` -> `denied` 拒绝访问 权限值:   0
+
   * 以`rwxr-x---`为例，不同`user`对应的`method-permission-value`如下：
 
     * `owner = 4 + 2 + 1 = 7 `
     * `group = 4 + 0 + 1 = 5`
     * `other = 0 + 0 + 0 = 0` 
 
+  * 实际设置权限值是`0,1,2,4`这四个数字中任意三个之和
 
-
-  ```shell
-  # v1=owner-value; v2=group-value; v3=other-value;
-  chmod [-R] v1v2v3 filename/dirname
-  chmod -R 750 test
-  ```
-
-
-
-  * 这些权限值可以是`0,1,2,4`这四个数字中任意三个之和。
+    ```shell
+      # v1=owner-value; v2=group-value; v3=other-value;
+      chmod [-R] v1v2v3 filename/dirname
+      chmod -R 750 test
+    ```
 
 
 
@@ -181,13 +182,13 @@ chown [-R] username:groupname dirname/filename
     * `[ g ]` -> `group` 所属用户组
     * `[ o ]` -> `others` 非组内用户
     * `[ a ]` -> `all` 所有用户
-
   * 运算法则
     * `[ + ]` 加入
     * `[ - ]` 去除
     * `[ = ]` 赋值
-
   * `[rwx]`读写属性
+
+
 
 
 ```shell
@@ -301,7 +302,9 @@ ls -l
 
 ## 磁盘与目录管理
 
-* `df` 
+#### 磁盘已用空间
+
+*  `df`  ->  `report file system disk space usage` 
 
 
 
@@ -326,7 +329,7 @@ ls -l
 
     * `-i ` 以 `inode` 的数量代替`block`来展示用量
 
-      * `e.g.` 不指定参数，查看当前已挂载系统的所有可用空间
+      *  不指定参数，查看当前已挂载系统的所有可用空间
 
 
 
@@ -360,7 +363,9 @@ tmpfs           1.9G     0  1.9G   0% /sys/fs/cgroup
 tmpfs           380M     0  380M   0% /run/user/0
 ```
 
-  * `e.g.` 查看当前已挂载系统的所有可用空间，并展示文件系统的类型
+
+
+* `e.g.` 查看当前已挂载系统的所有可用空间，并展示文件系统的类型
 
 
 
@@ -375,7 +380,9 @@ tmpfs          tmpfs      1940844       0   1940844   0% /sys/fs/cgroup
 tmpfs          tmpfs       388172       0    388172   0% /run/user/0
 ```
 
-  * `e.g.` 列出包括虚拟文件在内的所有文件系统的信息。
+
+
+* `e.g.` 列出包括虚拟文件在内的所有文件系统的信息。
 
 
 
@@ -416,17 +423,19 @@ tmpfs             388172       0    388172   0% /run/user/1000
 
 
 
+#### 预估
+
 * `du`
 
 
 
-  ```shell
-  du [OPTION]... [FILE]...
-  du [OPTION]... --files0-from=F
-  ```
 
-* ​	`options` 
 
+
+
+
+
+* `options` 
   * `-a` 统计当前目录下，所有文件和子目录的占用量，多级子目录递归展示；
       * `-h`以人们较易读的容量格式 `G/M`显示；
       * `-s` 仅仅展示当前目录的总占用量，不会显示目录中的文件和子目录的占用量；
@@ -638,69 +647,51 @@ tmpfs             388172       0    388172   0% /run/user/1000
 
 * 目录操作指令
   * `cd`  -> `change directory` 切换目录
+
   * `pwd` -> `print working directory` 查看当前工作目录的绝对路径
 
     * `-P` -> `physical` 查看真实路径。即对于 `link` 路径，会显示完整路径。
+
   * `mkdir`  -> `make directory` 创建一个新的目录
 
+    ```shell
+    mkdir [options] file
+    ```
 
+      * `-m` -> `mode` 创建目录并设置该目录的操作权限。如果不加该参数，系统会预设权限值。
 
-  ```shell
-  mkdir [options] file
-  ```
+        ```shell
+        mkdir -m 711 test
+        ```
 
+      * `-p` -> `parents` 递归创建多级目录，如果路径默认已经存在则沿用旧目录
 
+        ```shell
+         mkdir -p dir1/dir2/dir3
+        ```
 
-  *  `-m` -> `mode` 创建目录并设置该目录的操作权限。如果不加该参数，系统会预设权限值。
+    * `rmdir` -> `remove directory` 删除目录，只能删除空目录
 
+         * `-p` 递归删除多级空目录；e.g. `'rmdir -p a/b/c' is similar to 'rmdir a/b/c a/b a'` 
+         * `rm -rf directory` 强制删除目标目录中的所有内容，删库跑路喽~~~
 
-
-  ```shell
-  mkdir -m 711 test
-  ```
-
-
-
-  *  `-p` -> `parents` 递归创建多级目录，如果路径默认已经存在则沿用旧目录
-
-
-
-  ```shell
-  mkdir -p dir1/dir2/dir3
-  ```
-
-
-
-  *  `rmdir` -> `remove directory` 删除目录，只能删除空目录
-
-    * `-p` 递归删除多级空目录；e.g. `'rmdir -p a/b/c' is similar to 'rmdir a/b/c a/b a'` 
-    * `rm -rf directory` 强制删除目标目录中的所有内容，删库跑路喽~~~
-
-*  `$PATH` 配置全局环境变量
+* `$PATH` 配置全局环境变量
 
   * 将某个路径配置到该变量后，在任意目录下都可执行该路径中的可执行文件
 
+    ```shell
+    PATH="$PATH":/directory
+    ```
 
+    * 不配置`PATH` 使用绝对路径来访问，前提知道要执行文件的准确绝对路径
 
-  ```shell
-  PATH="$PATH":/directory
-  ```
+      ```shell
+        /directory/filename
+        
+        ./directory/filename
+      ```
 
-
-
-  * 不配置`PATH` 使用绝对路径来访问，前提知道要执行文件的准确绝对路径
-
-
-
-  ```shell
-  /directory/filename
-  
-  ./directory/filename
-  ```
-
-
-
-  * 当`PATH` 中配置了同一个可执行文件的多个路径，则按照配置的顺序，系统先查到谁就会执行谁
+    * 当`PATH` 中配置了同一个可执行文件的多个路径，则按照配置的顺序，系统先查到谁就会执行谁
 
 
 
@@ -708,140 +699,139 @@ tmpfs             388172       0    388172   0% /run/user/1000
 
 * `ls` -> `list directory contents` 列出文件/目录的信息
 
-  *  `synopsis` 
+  * `synopsis` 
 
+    ```shell
+      ls [OPTION]... [FILE]...
+    ```
 
+  *  `options` 
 
-  ```shell
-  ls [OPTION]... [FILE]...
-  ```
+     *  `-a` -> `--all` 列出目标目录下所有的子目录/文件，包括以`.`开头的文件/目录
 
+     * `-A` -> `--almost-all` 列出目标目录下所有的子目录/文件，不包括以`.`和`..`开头的文件/目录
 
+     * `-d` -> `--directory` 列出目标目录自己本身，不包括目录下的其他内容
 
-    *  `options` 
+     * `-f` 列出目标目录下所有的子目录/文件，但不会对列出的内容进行排序，也不会用颜色区分文件/目录的类型
 
-      *  `-a` -> `--all` 列出目标目录下所有的子目录/文件，包括以`.`开头的文件/目录
-      *  `-A` -> `--almost-all` 列出目标目录下所有的子目录/文件，不包括以`.`和`..`开头的文件/目录
-      *  `-d` -> `--directory` 列出目标目录自己本身，不包括目录下的其他内容
-      *  `-f` 列出目标目录下所有的子目录/文件，但不会对列出的内容进行排序，也不会用颜色区分文件/目录的类型
-      *  `-F` -> `--classify` 列出目标目录下所有的子目录/文件，并在每个条目后面追加文件/目录的类型`(one of */=>@|)`，不包括以`.`和`..`开头的文件/目录
-      *  `-h` -> `--human-readable` 列出目标目录下所有的子目录/文件，并以人易读的方式展示容量大小，不包括以`.`和`..`开头的文件/目录。`e.g., 1K 234M 2G`
-      *  `-i` -> `--inode` 列出目标目录下所有的目录/文件，并展示文件的`inode`索引，不包括以`.`和`..`开头的文件/目录。
-      *  `-l` -> `--all` 以长列表格式列出目标目录下的所有文件，不包括以`.`和`..`开头的文件/目录。
-      *  `-n` -> `--numeric-uid-gid` 以长列表格式列出目标目录下的所有文件，并展示`userid`和`groupid`的数字值，不包括以`.`和`..`开头的文件/目录。
-      *  `-r` -> `--reverse`  倒序列出目标目录下所有的目录/文件，不包括以`.`和`..`开头的文件/目录。
-      *  `-R` -> `--recursive` 递归显示目标目录下所有的子目录/文件，不包括以`.`和`..`开头的文件/目录。
-      *  `-S` 列出目标目录下所有目录/文件，并以文件容量大小的倒序显示，不包括以`.`和`..`开头的文件/目录。
-      *  `-t` 列出目标目录下所有的目录/文件，并以最近修改时间倒序显示，不包括以`.`和`..`开头的文件/目录。
-      *  `--color=[OPTION]` 列出目标目录下所有目录/文件，不包括以`.`和`..`开头的文件/目录。
-        *  `never` 不根据文件类型显示相应的颜色
-        *  `auto ` 系统自行判断是否根据文件类型显示颜色
-        * `always ` 根据文件类型显示相应的颜色
+     * `-F` -> `--classify` 列出目标目录下所有的子目录/文件，并在每个条目后面追加文件/目录的类型`(one of */=>@|)`，不包括以`.`和`..`开头的文件/目录
 
+     * `-h` -> `--human-readable` 列出目标目录下所有的子目录/文件，并以人易读的方式展示容量大小，不包括以`.`和`..`开头的文件/目录。`e.g., 1K 234M 2G`
 
+     * `-i` -> `--inode` 列出目标目录下所有的目录/文件，并展示文件的`inode`索引，不包括以`.`和`..`开头的文件/目录。
 
-      ```shell
-        ls --color=auto jinm/
-        dir-jinm  file-jinm.txt  test  test1  test1.txt  test2  test3
-        
-        # root @ localhost in /home [0:35:07] 
-        ls --color=never jinm/
-        dir-jinm  file-jinm.txt  test  test1  test1.txt  test2  test3
-        
-        # root @ localhost in /home [0:35:18] 
-        ls --color=always jinm/
-        dir-jinm  file-jinm.txt  test  test1  test1.txt  test2  test3
-      ```
+     * `-l` -> `--all` 以长列表格式列出目标目录下的所有文件，不包括以`.`和`..`开头的文件/目录。
 
+     * `-n` -> `--numeric-uid-gid` 以长列表格式列出目标目录下的所有文件，并展示`userid`和`groupid`的数字值，不包括以`.`和`..`开头的文件/目录。
 
+     * `-r` -> `--reverse`  倒序列出目标目录下所有的目录/文件，不包括以`.`和`..`开头的文件/目录。
 
-      *  `--full-time` 以长列表的方式列出目标目录下所有文件/目录，并展示详细的最近修改时间`year-month-day hour:minutes:seconds.millisecondstimestamp` ，不包括以`.`和`..`开头的文件/目录。
+     * `-R` -> `--recursive` 递归显示目标目录下所有的子目录/文件，不包括以`.`和`..`开头的文件/目录。
 
+     * `-S` 列出目标目录下所有目录/文件，并以文件容量大小的倒序显示，不包括以`.`和`..`开头的文件/目录。
 
+     * `-t` 列出目标目录下所有的目录/文件，并以最近修改时间倒序显示，不包括以`.`和`..`开头的文件/目录。
 
-      ```shell
-        # root @ localhost in /home [0:35:27] 
-        ls --full-time jinm/
-        drwxr-xr-x 3 beyond jinm 4096 2018-12-13 17:25:35.211053250 +0800 dir-jinm
-        -rw-rw-r-- 1 jinm   jinm   17 2018-12-13 16:37:44.331346441 +0800 file-jinm.txt
-        drwx-w---- 2 jinm   jinm 4096 2018-12-18 16:05:32.386878919 +0800 test
-        drwxrwxr-x 3 root   root 4096 2018-12-18 16:06:17.452924751 +0800 test1
-        -rw-r--r-- 1 beyond jinm    0 2018-12-13 17:56:32.577884166 +0800 test1.txt
-        drwxrwxr-x 2 root   root 4096 2018-12-18 15:52:59.109674461 +0800 test2
-        drwxrwxr-x 2 root   root 4096 2018-12-18 15:54:09.907889943 +0800 test3
-      ```
+     * `--color=[OPTION]` 列出目标目录下所有目录/文件，不包括以`.`和`..`开头的文件/目录。
+       * `never` 不根据文件类型显示相应的颜色
 
+       * `auto ` 系统自行判断是否根据文件类型显示颜色
 
+       * `always ` 根据文件类型显示相应的颜色
 
-      *  `--time=[OPTION]` 根据权限修改时间列出目标目录中的文件/目录
-        *  `atime` 以最近修改文件操作权限时间的倒序展示
-        *  `ctime` 以最近修改用户组/拥有者权限时间的倒序展示
+         ```shell
+             ls --color=auto jinm/
+             dir-jinm  file-jinm.txt  test  test1  test1.txt  test2  test3
+             
+             # root @ localhost in /home [0:35:07] 
+             ls --color=never jinm/
+             dir-jinm  file-jinm.txt  test  test1  test1.txt  test2  test3
+             
+             # root @ localhost in /home [0:35:18] 
+             ls --color=always jinm/
+             dir-jinm  file-jinm.txt  test  test1  test1.txt  test2  test3
+         ```
 
+     *  `--full-time` 以长列表的方式列出目标目录下所有文件/目录，并展示详细的最近修改时间`year-month-day hour:minutes:seconds.millisecondstimestamp` ，不包括以`.`和`..`开头的文件/目录。
 
+        ```shell
+            # root @ localhost in /home [0:35:27] 
+            ls --full-time jinm/
+            drwxr-xr-x 3 beyond jinm 4096 2018-12-13 17:25:35.211053250 +0800 dir-jinm
+            -rw-rw-r-- 1 jinm   jinm   17 2018-12-13 16:37:44.331346441 +0800 file-jinm.txt
+            drwx-w---- 2 jinm   jinm 4096 2018-12-18 16:05:32.386878919 +0800 test
+            drwxrwxr-x 3 root   root 4096 2018-12-18 16:06:17.452924751 +0800 test1
+            -rw-r--r-- 1 beyond jinm    0 2018-12-13 17:56:32.577884166 +0800 test1.txt
+            drwxrwxr-x 2 root   root 4096 2018-12-18 15:52:59.109674461 +0800 test2
+            drwxrwxr-x 2 root   root 4096 2018-12-18 15:54:09.907889943 +0800 test3
+        ```
 
-      ```shell
-      # 示例目录初始状态
-        # root @ localhost in ~jinm [1:01:49] 
-        ls -l
-        drwxr-xr-x 3 beyond jinm 4096 Dec 13 17:25 dir-jinm
-        -rw-rw-r-- 1 jinm   jinm   17 Dec 13 16:37 file-jinm.txt
-        drwx-w---- 2 jinm   jinm 4096 Dec 18 16:05 test
-        drwxrwxrwx 3 root   root 4096 Dec 18 16:06 test1
-        -rw-r--r-- 1 beyond jinm    0 Dec 13 17:56 test1.txt
-        drwxrwxr-x 2 root   root 4096 Dec 18 15:52 test2
-        drwxrwxr-x 2 root   root 4096 Dec 18 15:54 test3
-        ----------------------------------------------------------------------------------------------
-        
-        # 修改test的拥有者
-        # root @ localhost in ~jinm [1:02:19] 
-        chown beyond test
-        
-        # root @ localhost in ~jinm [1:05:20] 
-        ls --time=ctime 
-        test  test1  test3  test2  test1.txt  dir-jinm  file-jinm.txt
-        ----------------------------------------------------------------------------------------------
-        
-        # 修改test1的文件操作权限
-        # root @ localhost in ~jinm [1:19:51] 
-        $ chmod 700 test1
-        
-        # root @ localhost in ~jinm [1:21:02] 
-        ls --time=atime 
-        test1  test  dir-jinm  test2  test3  test1.txt  file-jinm.txt
-      ```
+       * `--time=[OPTION]` 根据权限修改时间列出目标目录中的文件/目录
+
+         *  `atime` 以最近修改文件操作权限时间的倒序展示
+         *  `ctime` 以最近修改用户组/拥有者权限时间的倒序展示
+
+         ```shell
+           # 示例目录初始状态
+             # root @ localhost in ~jinm [1:01:49] 
+             ls -l
+             drwxr-xr-x 3 beyond jinm 4096 Dec 13 17:25 dir-jinm
+             -rw-rw-r-- 1 jinm   jinm   17 Dec 13 16:37 file-jinm.txt
+             drwx-w---- 2 jinm   jinm 4096 Dec 18 16:05 test
+             drwxrwxrwx 3 root   root 4096 Dec 18 16:06 test1
+             -rw-r--r-- 1 beyond jinm    0 Dec 13 17:56 test1.txt
+             drwxrwxr-x 2 root   root 4096 Dec 18 15:52 test2
+             drwxrwxr-x 2 root   root 4096 Dec 18 15:54 test3
+             ----------------------------------------------------------------------------------------------
+             
+             # 修改test的拥有者
+             # root @ localhost in ~jinm [1:02:19] 
+             chown beyond test
+             
+             # root @ localhost in ~jinm [1:05:20] 
+             ls --time=ctime 
+             test  test1  test3  test2  test1.txt  dir-jinm  file-jinm.txt
+             ----------------------------------------------------------------------------------------------
+             
+             # 修改test1的文件操作权限
+             # root @ localhost in ~jinm [1:19:51] 
+             $ chmod 700 test1
+             
+             # root @ localhost in ~jinm [1:21:02] 
+             ls --time=atime 
+             test1  test  dir-jinm  test2  test3  test1.txt  file-jinm.txt
+         ```
 
 
 
 
 * `cp` -> `copy files and directories` 
 
-  *  `synopsis` 
+  * `synopsis` 
 
+    ```shell
+      cp -[options] source target
+      
+      # 将多个目录一次性复制到同一个目标目录中去
+      cp -[options] source1 source2 ... sourcen target
+    ```
 
+  * `options` 
 
-  ```shell
-  cp -[options] source target
-  
-  # 将多个目录一次性复制到同一个目标目录中去
-  cp -[options] source1 source2 ... sourcen target
-  ```
+    *  `-a` -> `--archive` 等同于 `-pdr` 
+    *  `-d` -> `--no-dereference --preserve=links`  若来源为`link file` 时，复制该链接文件的属性而非被`link` 的真实文件的`inode`。
+    *  `-f` -> `--force`  强制复制。如果目标目录无法访问(比如文件重复等)，则删除该目录，并且重试。
+    *  `-i` -> `--interactive` 若复制过程中出现覆盖情况，则会进行提示。
+    *  `-l` -> `--link` 复制到到目标目录内容的`hard link` 而不是文件本身
+    *  `-p` -> `--preserve`  将复制内容的文件属性也进行复制，文件属性保持原状，不会由系统预设。
+    *  `-r` -> `--recursive` 递归复制源目录，包括其子目录和子文件。
+    *  `-s` -> `--symbolic-link` 以符号链接`symbolic link`的方式复制内容。
+    *  `-u` -> `--update` 当`source` 是新建的，`destination` 被删除了，才会执行复制过程。当`destination`与`source`有差异时才进行复制，可以用于备份等工作。
 
+    * 当前用户必须要有`source` 的`read`权限才能进行复制
 
-
-    *  `options` 
-      *  `-a` -> `--archive` 等同于 `-pdr` 
-      *  `-d` -> `--no-dereference --preserve=links`  若来源为`link file` 时，复制该链接文件的属性而非被`link` 的真实文件的`inode`。
-      *  `-f` -> `--force`  强制复制。如果目标目录无法访问(比如文件重复等)，则删除该目录，并且重试。
-      * `-i` -> `--interactive` 若复制过程中出现覆盖情况，则会进行提示。
-      *  `-l` -> `--link` 复制到到目标目录内容的`hard link` 而不是文件本身
-      *  `-p` -> `--preserve`  将复制内容的文件属性也进行复制，文件属性保持原状，不会由系统预设。
-      * `-r` -> `--recursive` 递归复制源目录，包括其子目录和子文件。
-      * `-s` -> `--symbolic-link` 以符号链接`symbolic link`的方式复制内容。
-      *  `-u` -> `--update` 当`source` 是新建的，`destination` 被删除了，才会执行复制过程。当`destination`与`source`有差异时才进行复制，可以用于备份等工作。
-
-  * 当前用户必须要有`source` 的`read`权限才能进行复制
-
-  * 复制过程中会改变源文件的`owner`和`group` 属性，谁复制就会变成谁的。当某些文件权限要求较高(比如密码文件`/etc/shadow`)，在复制是加上`-a` 或 `-p` 等属性保证访问安全性。
+    * 复制过程中会改变源文件的`owner`和`group` 属性，谁复制就会变成谁的。当某些文件权限要求较高(比如密码文件`/etc/shadow`)，在复制是加上`-a` 或 `-p` 等属性保证访问安全性。
 
 
 
@@ -849,36 +839,32 @@ tmpfs             388172       0    388172   0% /run/user/1000
 
   * `synopsis` 
 
-
-
     ```shell
     rm [option] file
     ```
 
-  * `options` 
+    * `options` 
 
-    * `-f` -> `--force` 强制删除目标文件/目录，忽略不存在的参数和文件，并且没有提示。
-    * `-i` 删除目标文件/目录时会进行提示，询问操作者是否确定执行删除动作。删除多级目录时，也会逐个提示。
-    * `-r` -> `--recursive` 递归删除目标目录，包括其子目录和文件。
+      * `-f` -> `--force` 强制删除目标文件/目录，忽略不存在的参数和文件，并且没有提示。
+      * `-i` 删除目标文件/目录时会进行提示，询问操作者是否确定执行删除动作。删除多级目录时，也会逐个提示。
+      * `-r` -> `--recursive` 递归删除目标目录，包括其子目录和文件。
 
-  * `e.g.` 某些文件或目录名称中带有关键字符 比如 `-` 等，执行相关命令操作时，系统无法识别 `-` 后面的文件名称(当中指令的参数)，可以用`./filename`等方式执行命令。
+    * `e.g.` 某些文件或目录名称中带有关键字符 比如 `-` 等，执行相关命令操作时，系统无法识别 `-` 后面的文件名称(当中指令的参数)，可以用`./filename`等方式执行命令。
 
-
-
-    ```shell
-    # root @ localhost in /home/jinm [11:45:19] 
-    ll 
-    -rw-r--r-- 1 root   root    0 Dec 19 11:45 -hello-.txt
-    
-    # root @ localhost in /home/jinm [11:45:20] 
-    rm -hello-.txt
-    rm: invalid option -- 'h'
-    Try 'rm ./-hello-.txt' to remove the file ‘-hello-.txt’.
-    Try 'rm --help' for more information.
-    --------------------------------------------------------------------------------------------------
-    # root @ localhost in /home/jinm [11:49:52] C:1
-    rm ./-hello-.txt
-    ```
+      ```shell
+      # root @ localhost in /home/jinm [11:45:19] 
+      ll 
+      -rw-r--r-- 1 root   root    0 Dec 19 11:45 -hello-.txt
+      
+      # root @ localhost in /home/jinm [11:45:20] 
+      rm -hello-.txt
+      rm: invalid option -- 'h'
+      Try 'rm ./-hello-.txt' to remove the file ‘-hello-.txt’.
+      Try 'rm --help' for more information.
+      --------------------------------------------------------------------------------------------------
+      # root @ localhost in /home/jinm [11:49:52] C:1
+      rm ./-hello-.txt
+      ```
 
 
 
@@ -886,24 +872,20 @@ tmpfs             388172       0    388172   0% /run/user/1000
 
   * `synopsis` 
 
-
-
     ```shell
     mv [OPTION] SOURCE DIRECTORY
     mv [OPTION] SOURCE1,SOURCE2...SOURCEN DIRECTORY
     ```
 
-  * `option`
+    * `option` 	
 
-    * `-f` -> `--force` 强制移动目标文件/目录，文件覆盖没有提示。
-    * `-i` -> `--interactive` 覆盖之前进行提示。
-    * `-u` -> `--update` 移动`destination` 中没有或者最近修改时间比 `source`老的文件。
+      * `-f` -> `--force` 强制移动目标文件/目录，文件覆盖没有提示。
+      * `-i` -> `--interactive` 覆盖之前进行提示。
+      * `-u` -> `--update` 移动`destination` 中没有或者最近修改时间比 `source`老的文件。
 
 
 
 * 获取文件/目录名称和所处的路径
-
-
 
   ```shell
   # root @ localhost in /home/jinm [15:36:13] 
@@ -927,177 +909,157 @@ tmpfs             388172       0    388172   0% /run/user/1000
 
   * `synopsis` 
 
-
-
     ```shell
     cat [OPTION]... [FILE]...
     ```
 
-  * `options`
+    * `options` 
 
-    * `-A` -> `--show-all` 查看目标文件的内容，等同于`-vET`。
-    * `-E` -> `--show-ends` 查看目标文件的内容，并展示每行的断尾符`$`。
-    * `-n` -> `--number` 查看目标文件的内容，并打印行号。
-    * `-T` -> `--show-tabs` 查看目标文件的内容，并将内容中的制表符`TAB` 以`^I`显示出来。
-    * `-v` -> `--show-nonprinting` 查看目标文件的内容，并显示内容中包含的特殊符号，不包括`LFD and TAB`。
+      * `-A` -> `--show-all` 查看目标文件的内容，等同于`-vET`。
+      * `-E` -> `--show-ends` 查看目标文件的内容，并展示每行的断尾符`$`。
+      * `-n` -> `--number` 查看目标文件的内容，并打印行号。
+      * `-T` -> `--show-tabs` 查看目标文件的内容，并将内容中的制表符`TAB` 以`^I`显示出来。
+      * `-v` -> `--show-nonprinting` 查看目标文件的内容，并显示内容中包含的特殊符号，不包括`LFD and TAB`。
 
-  * 在` Linux` 是以 `$` 为断行字符，而在 `Windows` 则是以` ^M$ `为断行字符。
+    * 在` Linux` 是以 `$` 为断行字符，而在 `Windows` 则是以` ^M$ `为断行字符。
 
 
 
 * `tac` -> `concatenate in reverse`
 
-  *  `synopsis` 
+  * `synopsis` 
 
+    ```shell
+      tac [OPTION]... [FILE]...
+    ```
 
-
-  ```shell
-  tac [OPTION]... [FILE]...
-  ```
-
-
-
-
-  * `cat` 是按行号顺序显示内容，`tac` 恰好相反是按行号的倒序显示
+    * `cat` 是按行号顺序显示内容，`tac` 恰好相反是按行号的倒序显示
 
 
 
 * `nl` -> `number lines of files` 
 
-  *  `synopsis` 
-
-
-
-  ```shell
-  nl [OPTION]... [FILE]...
-  ```
-
-
-
-  * `options`
-
-    * `-b` -> `--body-numbering=STYPE` 查看目标文件的内容，并打印行号。
-      * `a` 不论是否为空行都打印行号 ，等同于 `cat -n` 
-      * `t` 如果是空行不打印行号
-
-
+  * `synopsis` 
 
     ```shell
-    # root @ localhost in /home/jinm [16:50:12] 
-    ll 
-    -rw-r--r-- 1 jinm   jinm   67 Dec 19 16:49 hello.txt
-    
-    # root @ localhost in /home/jinm [16:50:14] 
-    nl -b t hello.txt
-         1	jjkfdsl
-           
-         2	jkdsljf
-         3	324234
-         4	435342$%$#%
-         5	%&^*%^#$%@#
-         6	32423432
-         7	dgdfgerre
-    
-    # root @ localhost in /home/jinm [16:50:29] 
-    nl -b a hello.txt
-         1	jjkfdsl
-         2	
-         3	jkdsljf
-         4	324234
-         5	435342$%$#%
-         6	%&^*%^#$%@#
-         7	32423432
-         8	dgdfgerre
+      nl [OPTION]... [FILE]...
     ```
 
+    * `options`
 
+      * `-b` -> `--body-numbering=STYPE` 查看目标文件的内容，并打印行号。
+        * `a` 不论是否为空行都打印行号 ，等同于 `cat -n` 
+        * `t` 如果是空行不打印行号
 
-    *  `-n` -> `--number-format=FORMAT` 查看目标文件的内容，并以给定的位置打印行号。
-      *  `ln` 行号在屏幕的最左方显示
-      *  `rn` 行号在自己字段`-n`的最右方显示，且不加`0`
-      *  `rz` 行号在自己字段`-n`的最左方显示，且加`0` 
-
-
-
-    ```shell
-    # root @ localhost in /home/jinm [16:59:54] 
-    ll 
-    -rw-r--r-- 1 jinm   jinm   67 Dec 19 16:49 hello.txt
-    
-    # root @ localhost in /home/jinm [16:51:29] 
-    $ nl -n ln hello.txt
-    1     	jjkfdsl
-           
-    2     	jkdsljf
-    3     	324234
-    4     	435342$%$#%
-    5     	%&^*%^#$%@#
-    6     	32423432
-    7     	dgdfgerre
-    
-    # root @ localhost in /home/jinm [17:00:25] C:1
-    $ nl -n rn hello.txt
-         1	jjkfdsl
-           
-         2	jkdsljf
-         3	324234
-         4	435342$%$#%
-         5	%&^*%^#$%@#
-         6	32423432
-         7	dgdfgerre
-    
-    # root @ localhost in /home/jinm [17:00:51] 
-    $ nl -n rz hello.txt
-    000001	jjkfdsl
-           
-    000002	jkdsljf
-    000003	324234
-    000004	435342$%$#%
-    000005	%&^*%^#$%@#
-    000006	32423432
-    000007	dgdfgerre
-    ```
-
-
-
-    *  `-w` -> `--number-width=NUMBER` 查看目标文件的内容，并以指定的字符长度打印行号。
-
-
-
-    ```shell
-    # root @ localhost in /home/jinm [17:06:24] 
-    $  nl -n rz hello.txt
-    000001	jjkfdsl
-           
-    000002	jkdsljf
-    000003	324234
-    000004	435342$%$#%
-    000005	%&^*%^#$%@#
-    000006	32423432
-    000007	dgdfgerre
-    
-    # root @ localhost in /home/jinm [17:06:39] 
-    $  nl -n rz -w 3 hello.txt
-    001	jjkfdsl
+        ```shell
+        # root @ localhost in /home/jinm [16:50:12] 
+        ll 
+        -rw-r--r-- 1 jinm   jinm   67 Dec 19 16:49 hello.txt
         
-    002	jkdsljf
-    003	324234
-    004	435342$%$#%
-    005	%&^*%^#$%@#
-    006	32423432
-    007	dgdfgerre
-    
-    # root @ localhost in /home/jinm [17:06:51] 
-    $  nl -n rz -w 2 hello.txt
-    01	jjkfdsl
-       
-    02	jkdsljf
-    03	324234
-    04	435342$%$#%
-    05	%&^*%^#$%@#
-    06	32423432
-    07	dgdfgerre
-    ```
+        # root @ localhost in /home/jinm [16:50:14] 
+        nl -b t hello.txt
+             1	jjkfdsl
+               
+             2	jkdsljf
+             3	324234
+             4	435342$%$#%
+             5	%&^*%^#$%@#
+             6	32423432
+             7	dgdfgerre
+        
+        # root @ localhost in /home/jinm [16:50:29] 
+        nl -b a hello.txt
+             1	jjkfdsl
+             2	
+             3	jkdsljf
+             4	324234
+             5	435342$%$#%
+             6	%&^*%^#$%@#
+             7	32423432
+             8	dgdfgerre
+        ```
+
+      * `-n` -> `--number-format=FORMAT` 查看目标文件的内容，并以给定的位置打印行号。
+
+        *  `ln` 行号在屏幕的最左方显示
+        *  `rn` 行号在自己字段`-n`的最右方显示，且不加`0`
+        *  `rz` 行号在自己字段`-n`的最左方显示，且加`0` 
+
+        ```shell
+        # root @ localhost in /home/jinm [16:59:54] 
+        ll 
+        -rw-r--r-- 1 jinm   jinm   67 Dec 19 16:49 hello.txt
+        
+        # root @ localhost in /home/jinm [16:51:29] 
+        $ nl -n ln hello.txt
+        1     	jjkfdsl
+               
+        2     	jkdsljf
+        3     	324234
+        4     	435342$%$#%
+        5     	%&^*%^#$%@#
+        6     	32423432
+        7     	dgdfgerre
+        
+        # root @ localhost in /home/jinm [17:00:25] C:1
+        $ nl -n rn hello.txt
+             1	jjkfdsl
+               
+             2	jkdsljf
+             3	324234
+             4	435342$%$#%
+             5	%&^*%^#$%@#
+             6	32423432
+             7	dgdfgerre
+        
+        # root @ localhost in /home/jinm [17:00:51] 
+        $ nl -n rz hello.txt
+        000001	jjkfdsl
+               
+        000002	jkdsljf
+        000003	324234
+        000004	435342$%$#%
+        000005	%&^*%^#$%@#
+        000006	32423432
+        000007	dgdfgerre
+        ```
+
+      * `-w` -> `--number-width=NUMBER` 查看目标文件的内容，并以指定的字符长度打印行号。
+
+        ```shell
+        # root @ localhost in /home/jinm [17:06:24] 
+        $  nl -n rz hello.txt
+        000001	jjkfdsl
+               
+        000002	jkdsljf
+        000003	324234
+        000004	435342$%$#%
+        000005	%&^*%^#$%@#
+        000006	32423432
+        000007	dgdfgerre
+        
+        # root @ localhost in /home/jinm [17:06:39] 
+        $  nl -n rz -w 3 hello.txt
+        001	jjkfdsl
+            
+        002	jkdsljf
+        003	324234
+        004	435342$%$#%
+        005	%&^*%^#$%@#
+        006	32423432
+        007	dgdfgerre
+        
+        # root @ localhost in /home/jinm [17:06:51] 
+        $  nl -n rz -w 2 hello.txt
+        01	jjkfdsl
+           
+        02	jkdsljf
+        03	324234
+        04	435342$%$#%
+        05	%&^*%^#$%@#
+        06	32423432
+        07	dgdfgerre
+        ```
 
 
 
@@ -1105,23 +1067,20 @@ tmpfs             388172       0    388172   0% /run/user/1000
 * `more` -> `file perusal filter for crt viewing` 
 
   * 查看文件内容，当要查看的内容长度大于当前屏幕长度时，会在屏幕下方显示当前显示内容的百分百，不能向前翻页
+
   * `synopsis` 
 
+    ```shell
+      more -[options] file [...]
+    ```
 
+    * `operation` 
 
-  ```shell
-  more -[options] file [...]
-  ```
-
-
-
-  * `operation` 
-
-    * `space` 在`more` 运行时按下空格键，表示向下翻一页
-    * `enter` 在`more` 运行时按下`enter` 键，表示向下翻一行
-    * `/`  在`more` 运行时按下`/` 键，光标会停留在屏幕最后一行等待输入，输入字符串并按下`enter` 键，会向下查找输入的内容。
-    * `:f` 在`more` 运行时依次按下`:` 键和`f`键，会在屏幕最后一行显示当前查看文件的文件名，以及当前显示内容所在的行数
-    * `q` 在`more` 运行时按下`q` 键，就会退出`more` 程序。
+      * `space` 在`more` 运行时按下空格键，表示向下翻一页
+      * `enter` 在`more` 运行时按下`enter` 键，表示向下翻一行
+      * `/`  在`more` 运行时按下`/` 键，光标会停留在屏幕最后一行等待输入，输入字符串并按下`enter` 键，会向下查找输入的内容。
+      * `:f` 在`more` 运行时依次按下`:` 键和`f`键，会在屏幕最后一行显示当前查看文件的文件名，以及当前显示内容所在的行数
+      * `q` 在`more` 运行时按下`q` 键，就会退出`more` 程序。
 
 
 
@@ -1143,39 +1102,34 @@ tmpfs             388172       0    388172   0% /run/user/1000
 
 * `head` -> `output the first part of files` 
 
-  *  `synopsis` 
+  * `synopsis` 
 
+    ```shell
+      head -[OPTION]... [FILE]...
+      head -[OPTION] [number]... [FILE]...
+    ```
 
+  * `options`
 
-  ```shell
-  head -[OPTION]... [FILE]...
-  head -[OPTION] [number]... [FILE]...
-  ```
+    * `n` 具体的数字值，代表几行，即查看文件的前`n` 行。
 
-
-
-    *  `options`
-      * `n` 具体的数字值，代表几行，即查看文件的前`n` 行。
-
-
-
-  ```shell
-  # root @ localhost in /home/jinm [18:01:30] 
-  head -5 hello.txt
-  jjkfdsl
-  
-  jkdsljf
-  324234
-  435342$%$#%
-  
-  # root @ localhost in /home/jinm [18:01:40] 
-  head -n 5 hello.txt
-  jjkfdsl
-  
-  jkdsljf
-  324234
-  435342$%$#%
-  ```
+    ```shell
+      # root @ localhost in /home/jinm [18:01:30] 
+      head -5 hello.txt
+      jjkfdsl
+      
+      jkdsljf
+      324234
+      435342$%$#%
+      
+      # root @ localhost in /home/jinm [18:01:40] 
+      head -n 5 hello.txt
+      jjkfdsl
+      
+      jkdsljf
+      324234
+      435342$%$#%
+    ```
 
 
 
@@ -1184,17 +1138,14 @@ tmpfs             388172       0    388172   0% /run/user/1000
 
   * `synopsis` 
 
+    ```shell
+      tail [OPTION]... [FILE]...
+    ```
 
+  * `options` 
 
-  ```shell
-  tail [OPTION]... [FILE]...
-  ```
-
-
-
-    * `options` 
-      *  `n` 具体的数字值，代表几行，即查看文件的后 `n` 行。
-      * `f` 前面接具体的`num`数字值，代表几行。要注意的是该参数表示实时查看，如果别查看的文件内容一直更改增加，增加的内容会按照`num`个行数不断`append`到屏幕末尾。 
+    *  `n` 具体的数字值，代表几行，即查看文件的后 `n` 行。
+    *  `f` 前面接具体的`num`数字值，代表几行。要注意的是该参数表示实时查看，如果别查看的文件内容一直更改增加，增加的内容会按照`num`个行数不断`append`到屏幕末尾。 
 
 
 
@@ -1202,11 +1153,11 @@ tmpfs             388172       0    388172   0% /run/user/1000
 
   * `synopsis` 
 
+    ```shell
+    od [OPTION]... [FILE]...
+    ```
 
 
-  ```shell
-  od [OPTION]... [FILE]...
-  ```
 
 
 
@@ -1242,6 +1193,20 @@ tmpfs             388172       0    388172   0% /run/user/1000
 ---
 
 
+
+
+
+
+
+* line1
+
+  * line2
+
+  ```shell
+  # shell, code content
+  ```
+
+  * line3
 
 
 
